@@ -11,13 +11,11 @@ const routes: RouteRecordRaw[] = [
     path: '/login',
     name: ROUTE_NAMES.LOGIN,
     component: () => import('src/pages/login/index-page.vue'),
-    meta: { guestOnly: true },
   },
   {
     path: '/signup',
     name: ROUTE_NAMES.SIGNUP,
     component: () => import('src/pages/signup/index-page.vue'),
-    meta: { guestOnly: true },
   },
   {
     path: '/account',

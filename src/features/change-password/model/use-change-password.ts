@@ -1,5 +1,4 @@
 import { useMutation } from '@pinia/colada';
-import type { AxiosError } from 'axios';
 import { useQuasar } from 'quasar';
 import type { ChangePasswordDto } from 'src/shared/api/dto';
 import { password } from 'src/shared/api/methods/change-password';
@@ -18,8 +17,8 @@ export function useChangePassword() {
       });
     },
 
-    onError: (error: AxiosError) => {
-      const message = error.response?.data?.message || 'Ошибка при обновлении пароля';
+    onError: () => {
+      const message = 'Ошибка при обновлении пароля';
       $q.notify({
         type: 'negative',
         message,

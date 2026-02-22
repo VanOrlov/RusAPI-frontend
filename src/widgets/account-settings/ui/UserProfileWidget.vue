@@ -17,15 +17,6 @@ const user = ref({
         </p>
       </div>
 
-      <div :class="$style.avatarSection">
-        <QAvatar size="64px" color="teal-1" text-color="secondary" :class="$style.avatar">
-          {{ user.name.charAt(0) }}
-        </QAvatar>
-        <div :class="$style.avatarActions">
-          <QBtn outline color="secondary" label="Сменить аватар" size="sm" no-caps />
-        </div>
-      </div>
-
       <div :class="$style.inputGroup">
         <label :class="$style.label">Ваше имя</label>
         <QInput v-model="user.name" outlined dense color="secondary" class="custom-input" />

@@ -11,10 +11,10 @@ const { mutate, isLoading } = useChangePassword();
 const isValid = computed(() => {
   return passwordRules.every((rule) => {
     return rule(newPassword.value);
-  });
+  }) && !!oldPassword.value;
 });
 
-const handleSubmit = async () => {
+const handleSubmit = () => {
   // Базовая проверка
   if (!oldPassword.value || newPassword.value.length < 6) return;
 
@@ -28,7 +28,7 @@ const handleSubmit = async () => {
     // Этот код выполнится ТОЛЬКО если запрос прошел успешно (статус 200)
     oldPassword.value = '';
     newPassword.value = '';
-  } catch {}
+  } catch {void 0}
 };
 </script>
 
