@@ -68,3 +68,7 @@ export interface ChangePasswordDto {
   oldPassword: string;
   newPassword: string;
 }
+
+export interface ChangeProfileDto {
+  name: string;
+}

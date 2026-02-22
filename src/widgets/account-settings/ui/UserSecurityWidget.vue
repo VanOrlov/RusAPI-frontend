@@ -2,11 +2,13 @@
 import { passwordRules, useChangePassword } from 'src/features/change-password';
 import { computed, ref } from 'vue';
 
+
+
 const oldPassword = ref('');
 const newPassword = ref('');
 
 // Достаем функцию вызова и статус загрузки из Colada
-const { mutate, isLoading } = useChangePassword();
+const { mutate, isLoading: isLoadingChangePass } = useChangePassword();
 
 const isValid = computed(() => {
   return passwordRules.every((rule) => {
@@ -64,7 +66,7 @@ const handleSubmit = () => {
     <QCardActions :class="$style.actions" align="right">
       <QBtn
         :disable="!isValid"
-        :loading="isLoading"
+        :loading="isLoadingChangePass"
         @click="handleSubmit"
         color="secondary"
         outline
