@@ -5,5 +5,6 @@ export const ROUTE_NAMES = {
   MAIN: 'MAIN',
   LOGIN: 'LOGIN',
   SIGNUP: 'SIGNUP',
-  ACCOUNT: 'ACCOUNT'
+  ACCOUNT: 'ACCOUNT',
+  PROJECTS: 'PROJECTS',
 } as const

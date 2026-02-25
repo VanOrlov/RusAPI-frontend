@@ -72,3 +72,16 @@ export interface ChangePasswordDto {
 export interface ChangeProfileDto {
   name: string;
 }
+
+export interface ProjectDto {
+  id: string;
+  nanoId: string;
+  name: string;
+  description?: string;
+  createdAt: string;
+}
+
+export interface CreateProjectPayload {
+  name: string;
+  description?: string;
+}
