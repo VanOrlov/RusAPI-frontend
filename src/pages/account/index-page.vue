@@ -26,6 +26,7 @@ import {
 
 <style lang="scss" module>
 .container {
+  padding: 16px;
   width: 100%;
   margin: 0 auto;
   display: flex;

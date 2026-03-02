@@ -7,7 +7,7 @@ import { TheHeader } from 'src/widgets/header/ui';
   <QLayout view="lHh Lpr lff" :class="$style.layout">
     <TheHeader />
 
-    <QPageContainer :class="$style.pageContainer">
+    <QPageContainer>
       <RouterView />
     </QPageContainer>
 
@@ -17,14 +17,9 @@ import { TheHeader } from 'src/widgets/header/ui';
 
 <style lang="scss" module>
 .layout {
-  padding: 20px;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   background-color: #ffffff;
   background-image: radial-gradient(rgba(38, 166, 154, 0.1) 2px, #ffffff 2px);
   background-size: 40px 40px;
-}
-
-.pageContainer {
-  height: 100%;
 }
 </style>

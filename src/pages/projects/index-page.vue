@@ -10,6 +10,7 @@ import { ProjectsListWidget } from 'src/widgets/projects/ui';
 
 <style lang="scss" module>
 .container {
+  padding: 16px;
   width: 100%;
   margin: 0 auto;
   gap: 32px;

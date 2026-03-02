@@ -13,6 +13,10 @@ export default defineConfig(() => {
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
 
+    boot: [
+      '~boot/motion'
+    ],
+
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
     css: ['app.scss'],
 

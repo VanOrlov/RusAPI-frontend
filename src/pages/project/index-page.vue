@@ -83,11 +83,7 @@ const selectedResource = computed(() => {
 
 .mainContent {
   flex-grow: 1;
-  padding: 0 16px;
-
-  @media (max-width: 768px) {
-    padding: 16px 0;
-  }
+  padding: 16px;
 }
 
 .loader,
