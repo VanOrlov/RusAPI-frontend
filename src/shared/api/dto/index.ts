@@ -89,8 +89,8 @@ export interface CreateProjectPayload {
 export interface ResourceDto {
   id: string;
   name: string;
-  schema: unknown;
-  data: unknown;
+  schema: SchemaFieldDto[];
+  data: Record<string, unknown>[];
   createdAt: string;
 }
 
@@ -106,6 +106,12 @@ export interface SchemaFieldDto {
 
 export interface UpdateSchemaPayload {
   resourceId: string;
-  projectNanoId: string; // Передаем, чтобы правильно сбросить кэш списка
+  projectNanoId: string;
   schema: SchemaFieldDto[];
+}
+
+export interface GenerateDataPayload {
+  resourceId: string;
+  projectNanoId: string;
+  count?: number;
 }

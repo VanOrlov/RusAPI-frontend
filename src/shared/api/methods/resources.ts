@@ -1,5 +1,10 @@
 import { API } from '../api';
-import type { CreateResourcePayload, ResourceDto, UpdateSchemaPayload } from '../dto';
+import type {
+  CreateResourcePayload,
+  GenerateDataPayload,
+  ResourceDto,
+  UpdateSchemaPayload,
+} from '../dto';
 
 export const resources = {
   /** Получить все ресурсы конкретного проекта */
@@ -16,6 +21,17 @@ export const resources = {
     const { data } = await API.patch<ResourceDto>(`/resources/${payload.resourceId}/schema`, {
       schema: payload.schema,
     });
+    return data;
+  },
+
+  async generateResourseData(payload: GenerateDataPayload): Promise<ResourceDto> {
+    const params = payload.count ? { count: payload.count } : {};
+
+    const { data } = await API.post<ResourceDto>(
+      `/resources/${payload.resourceId}/generate`,
+      null,
+      { params },
+    );
     return data;
   },
 };
