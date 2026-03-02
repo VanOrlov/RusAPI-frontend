@@ -2,8 +2,10 @@
 import { ref } from 'vue';
 import { useProjectsQuery } from 'src/entities/project/model/projects.query';
 import { useCreateProject } from 'src/features/create-project';
+import { useRouter } from 'vue-router';
 
 // 1. Подключаем список проектов
+const router = useRouter();
 const { data: projects, isLoading: isProjectsLoading } = useProjectsQuery();
 
 // 2. Подключаем мутацию создания
@@ -92,7 +94,7 @@ const formatDate = (isoString: string) => {
               <QIcon name="calendar_today" size="14px" :class="$style.metaIcon" />
               <span>Создан {{ formatDate(project.createdAt) }}</span>
             </div>
-            <QBtn flat round color="secondary" icon="arrow_forward" size="sm" />
+            <QBtn flat round color="secondary" icon="arrow_forward" size="sm" @click="router.push(`/projects/${project.nanoId}`)" />
           </div>
         </QCardSection>
       </QCard>

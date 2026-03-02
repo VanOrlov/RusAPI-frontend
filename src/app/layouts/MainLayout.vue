@@ -29,7 +29,7 @@ const handleLogout = () => {
         <span :class="$style.headerLogo" @click="goTo('/')">RusAPI</span>
 
         <QToolbar :class="$style.headerToolbar">
-          <QBtn color="secondary" outline label="Документация" no-caps @click="goTo('/docs')" />
+          <!--QBtn color="secondary" outline label="Документация" no-caps @click="goTo('/docs')" /-->
 
           <template v-if="isLoading">
             <QSpinner color="secondary" size="1.5em" :class="$style.spinner" />
@@ -126,13 +126,13 @@ const handleLogout = () => {
   justify-content: space-between;
   margin-inline: 120px;
   height: 80px;
-  cursor: pointer;
 }
 .headerLogo {
   font-size: 26px;
   font-weight: 700;
   letter-spacing: -1px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  cursor: pointer;
 }
 .headerToolbar {
   width: fit-content;

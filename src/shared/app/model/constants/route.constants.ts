@@ -7,4 +7,5 @@ export const ROUTE_NAMES = {
   SIGNUP: 'SIGNUP',
   ACCOUNT: 'ACCOUNT',
   PROJECTS: 'PROJECTS',
+  PROJECT: 'PROJECT',
 } as const

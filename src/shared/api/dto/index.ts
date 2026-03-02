@@ -85,3 +85,16 @@ export interface CreateProjectPayload {
   name: string;
   description?: string;
 }
+
+export interface ResourceDto {
+  id: string;
+  name: string;
+  schema: unknown;
+  data: unknown;
+  createdAt: string;
+}
+
+export interface CreateResourcePayload {
+  name: string;
+  projectNanoId: string;
+}

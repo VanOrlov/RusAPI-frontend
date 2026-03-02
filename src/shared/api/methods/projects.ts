@@ -11,4 +11,9 @@ export const projects = {
     const { data } = await API.post<ProjectDto>('/projects', payload);
     return data;
   },
+
+  async getById(id: string): Promise<ProjectDto> {
+    const { data } = await API.get<ProjectDto>(`/projects/${id}`);
+    return data;
+  },
 };
