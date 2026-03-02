@@ -5,7 +5,6 @@ import { unref } from 'vue';
 
 export function useResourcesQuery(projectNanoId: string | Ref<string>) {
   return useQuery({
-    // Ключ включает ID проекта: ['resources', 'Vx9_k2m']
     key: () => ['resources', unref(projectNanoId)],
     query: () => resources.getByProject(unref(projectNanoId)),
     enabled: () => !!unref(projectNanoId),

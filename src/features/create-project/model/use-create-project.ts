@@ -11,7 +11,6 @@ export function useCreateProject() {
     mutation: (payload: CreateProjectPayload) => projects.create(payload),
 
     onSuccess: () => {
-      // Сбрасываем кэш, чтобы список проектов автоматически обновился
       void queryCache.invalidateQueries({ key: ['projects'] });
 
       $q.notify({

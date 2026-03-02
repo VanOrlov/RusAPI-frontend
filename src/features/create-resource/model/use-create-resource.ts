@@ -11,7 +11,6 @@ export function useCreateResource() {
     mutation: (payload: CreateResourcePayload) => resources.create(payload),
 
     onSuccess: (data, payload) => {
-      // Сбрасываем кэш ресурсов ТОЛЬКО для этого проекта
       void queryCache.invalidateQueries({ key: ['resources', payload.projectNanoId] });
 
       $q.notify({

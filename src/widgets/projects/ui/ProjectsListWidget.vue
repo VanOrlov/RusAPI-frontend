@@ -4,10 +4,8 @@ import { useProjectsQuery } from 'src/entities/project/model/projects.query';
 import { ProjectCard } from 'src/entities/project/ui';
 import { CreateProjectModal } from 'src/features/create-project/ui';
 
-// Подключаем список проектов
 const { data: projects, isLoading: isProjectsLoading } = useProjectsQuery();
 
-// Управление модалкой
 const isModalOpen = ref(false);
 </script>
 

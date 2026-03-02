@@ -7,7 +7,6 @@ import { computed, ref } from 'vue';
 const oldPassword = ref('');
 const newPassword = ref('');
 
-// Достаем функцию вызова и статус загрузки из Colada
 const { mutate, isLoading: isLoadingChangePass } = useChangePassword();
 
 const isValid = computed(() => {
@@ -17,17 +16,14 @@ const isValid = computed(() => {
 });
 
 const handleSubmit = () => {
-  // Базовая проверка
   if (!oldPassword.value || newPassword.value.length < 6) return;
 
   try {
-    // Ждем выполнения мутации
     mutate({
       oldPassword: oldPassword.value,
       newPassword: newPassword.value,
     });
 
-    // Этот код выполнится ТОЛЬКО если запрос прошел успешно (статус 200)
     oldPassword.value = '';
     newPassword.value = '';
   } catch {void 0}

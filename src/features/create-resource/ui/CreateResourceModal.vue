@@ -14,7 +14,6 @@ const emit = defineEmits<{
 const { mutate: createEndpoint, isLoading: isCreating } = useCreateResource();
 const newResourceName = ref('');
 
-// Очищаем инпут каждый раз, когда модалка открывается
 watch(
   () => props.modelValue,
   (isOpen) => {

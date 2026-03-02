@@ -10,7 +10,6 @@ export function useUpdateSchema() {
   return useMutation({
     mutation: (payload: UpdateSchemaPayload) => resources.updateResourceSchema(payload),
     onSuccess: (data, payload) => {
-      // Сбрасываем кэш ресурсов для этого проекта, чтобы свежая схема подтянулась
       void queryCache.invalidateQueries({ key: ['resources', payload.projectNanoId] });
       $q.notify({
         type: 'positive',

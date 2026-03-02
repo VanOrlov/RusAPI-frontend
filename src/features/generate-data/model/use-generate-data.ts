@@ -11,7 +11,6 @@ export function useGenerateData() {
     mutation: (payload: GenerateDataPayload) => resources.generateResourseData(payload),
 
     onSuccess: (data, payload) => {
-      // Сбрасываем кэш, чтобы UI увидел новый массив data
       void queryCache.invalidateQueries({ key: ['resources', payload.projectNanoId] });
 
       $q.notify({

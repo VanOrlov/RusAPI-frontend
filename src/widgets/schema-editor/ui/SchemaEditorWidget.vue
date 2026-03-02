@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import type { ResourceDto } from 'src/shared/api/dto';
 import SchemaTab from './components/SchemaTab.vue';
 import DataTab from './components/DataTab.vue';
+import { copyText } from 'src/shared/lib/copy-to-clipboard';
 
 defineProps<{
   resource: ResourceDto;
@@ -16,7 +17,12 @@ const activeTab = ref('schema');
   <div :class="$style.editor">
     <div :class="$style.header">
       <span :class="$style.title">
-        Эндпоинт: <span class="text-secondary">/{{ resource.name }}</span>
+        Эндпоинт:
+        <span
+          :class="$style.textSecondary"
+          @click="copyText(resource.name, 'Эндпоинт успешно скопирован')"
+          >/{{ resource.name }} <QIcon name="content_copy" size="12px" :class="$style.copyIcon"
+        /></span>
       </span>
 
       <a :href="`https://fakerjs.dev/api`" target="_blank" :class="$style.publicLink">
@@ -76,6 +82,14 @@ const activeTab = ref('schema');
   font-weight: 600;
   margin: 0;
   color: #111;
+}
+.textSecondary {
+  color: #26a69a;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  &:hover {
+    color: rgba(38, 166, 154, 0.7);
+  }
 }
 
 .publicLink {

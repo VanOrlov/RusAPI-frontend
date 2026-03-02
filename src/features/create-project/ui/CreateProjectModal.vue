@@ -15,7 +15,6 @@ const { mutate: create, isLoading: isCreating } = useCreateProject();
 const newProjectName = ref('');
 const newProjectDesc = ref('');
 
-// Очищаем форму при открытии
 watch(
   () => props.modelValue,
   (isOpen) => {

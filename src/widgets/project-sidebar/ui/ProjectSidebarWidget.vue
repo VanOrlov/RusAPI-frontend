@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
 import type { ProjectDto, ResourceDto } from 'src/shared/api/dto';
+import { copyText } from 'src/shared/lib/copy-to-clipboard';
 
 defineProps<{
   project: ProjectDto;
@@ -12,12 +14,31 @@ const emit = defineEmits<{
   (e: 'select', id: string): void;
   (e: 'create'): void;
 }>();
+
+const router = useRouter();
 </script>
 
 <template>
   <aside :class="$style.sidebar">
+    <div :class="$style.backWrapper">
+      <QBtn
+        flat
+        dense
+        no-caps
+        icon="arrow_back"
+        label="Все проекты"
+        color="grey-7"
+        :class="$style.backBtn"
+        @click="router.push('/projects')"
+      />
+    </div>
+
     <span :class="$style.sidebarTitle">{{ project.name }}</span>
-    <div :class="$style.nanoId">ID: {{ project.nanoId }}</div>
+    <div :class="$style.nanoId">
+      ID:<span @click="copyText(project.nanoId, 'ID проекта скопирован!')">{{
+        project.nanoId
+      }}</span>
+    </div>
 
     <QSeparator class="q-my-md" />
 
@@ -30,7 +51,11 @@ const emit = defineEmits<{
       <QSpinner color="secondary" size="1.5em" />
     </div>
 
-    <QList v-else-if="resources && resources.length > 0" padding :class="['rounded-borders', $style.listModified]">
+    <QList
+      v-else-if="resources && resources.length > 0"
+      padding
+      :class="['rounded-borders', $style.listModified]"
+    >
       <QItem
         v-for="res in resources"
         :key="res.id"
@@ -56,39 +81,53 @@ const emit = defineEmits<{
 
 <style lang="scss" module>
 .sidebar {
-  width: 100%; /* На мобилке на всю ширину */
+  width: 100%;
   background-color: #fafafa;
-  border-bottom: 1px solid #eaeaea; /* Линия снизу, а не справа */
+  border-bottom: 1px solid #eaeaea;
   padding: 16px;
   display: flex;
   flex-direction: column;
 
   @media (min-width: 768px) {
-    width: 280px; /* На десктопе фиксированная ширина */
+    width: 280px;
     border-right: 1px solid #eaeaea;
     border-bottom: none;
     padding: 24px;
-    height: calc(100vh - 60px); /* Чтобы сайдбар не скроллился вместе с сайтом */
+    height: calc(100vh - 60px);
     position: sticky;
     top: 0;
   }
 }
 
-/* Настройки для горизонтального скролла на мобилках */
+.backWrapper {
+  margin-bottom: 16px;
+}
+
+.backBtn {
+  font-weight: 500;
+  font-size: 13px;
+  margin-left: -8px; 
+  transition: color 0.2s;
+
+  &:hover {
+    color: #111 !important;
+  }
+}
 .listModified {
   display: flex;
   flex-direction: row;
   overflow-x: auto;
   gap: 8px;
   padding: 8px 0;
-  
-  /* Прячем ползунок скроллбара, чтобы было красиво */
-  &::-webkit-scrollbar { display: none; }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
   -ms-overflow-style: none;
   scrollbar-width: none;
 
   @media (min-width: 768px) {
-    flex-direction: column; /* Возвращаем в столбик на десктопе */
+    flex-direction: column;
     overflow-x: visible;
     gap: 0;
   }
@@ -102,20 +141,36 @@ const emit = defineEmits<{
 }
 
 .nanoId {
-  font-family: monospace;
   font-size: 12px;
   color: #666;
-  background: #eee;
-  padding: 2px 6px;
-  border-radius: 4px;
-  width: fit-content;
+  display: flex;
+  align-items: center;
+
+  span {
+    font-family: monospace;
+    margin-left: 5px;
+    color: #666;
+    background: #eee;
+    padding: 2px 6px;
+    border-radius: 4px;
+    width: fit-content;
+    cursor: pointer;
+    transition:
+      background 0.2s,
+      color 0.2s;
+
+    &:hover {
+      background: #e0e0e0;
+      color: #111;
+    }
+  }
 }
 
 .resourceItem {
   border-radius: 6px;
   margin-bottom: 0;
   white-space: nowrap;
-  
+
   @media (min-width: 768px) {
     margin-bottom: 4px;
   }

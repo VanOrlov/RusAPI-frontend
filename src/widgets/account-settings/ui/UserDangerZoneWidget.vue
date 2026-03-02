@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// Логика удаления будет тут
+// TODO: логика удаления аккаунта
 </script>
 
 <template>

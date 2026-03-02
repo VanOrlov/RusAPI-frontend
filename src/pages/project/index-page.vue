@@ -10,15 +10,12 @@ import { CreateResourceModal } from 'src/features/create-resource';
 const route = useRoute();
 const projectId = route.params.id as string;
 
-// Запросы данных
 const { data: project, isLoading: isProjectLoading } = useProjectQuery(projectId);
 const { data: resources, isLoading: isResourcesLoading } = useResourcesQuery(projectId);
 
-// Состояние интерфейса
 const selectedResourceId = ref<string | null>(null);
 const isModalOpen = ref(false);
 
-// Вычисляем выбранный эндпоинт
 const selectedResource = computed(() => {
   if (!resources.value || !selectedResourceId.value) return null;
   return resources.value.find((r) => r.id === selectedResourceId.value) || null;
