@@ -3,49 +3,25 @@ import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useProjectQuery } from 'src/entities/project/model/project.query';
 import { useResourcesQuery } from 'src/entities/resource/model/resources.query';
-import { useCreateResource } from 'src/features/create-resource';
 import { SchemaEditorWidget } from 'src/widgets/schema-editor/ui';
+import { ProjectSidebarWidget } from 'src/widgets/project-sidebar/ui';
 
 const route = useRoute();
 const projectId = route.params.id as string;
 
+// Запросы данных
 const { data: project, isLoading: isProjectLoading } = useProjectQuery(projectId);
-
 const { data: resources, isLoading: isResourcesLoading } = useResourcesQuery(projectId);
 
-const { mutate: createEndpoint, isLoading: isCreating } = useCreateResource();
-
-const isModalOpen = ref(false);
-const newResourceName = ref('');
-
-// Храним ID выбранного эндпоинта
+// Состояние интерфейса
 const selectedResourceId = ref<string | null>(null);
+const isModalOpen = ref(false);
 
-// Вычисляем сам объект выбранного ресурса из списка
+// Вычисляем выбранный эндпоинт
 const selectedResource = computed(() => {
   if (!resources.value || !selectedResourceId.value) return null;
   return resources.value.find((r) => r.id === selectedResourceId.value) || null;
 });
-
-const openModal = () => {
-  newResourceName.value = '';
-  isModalOpen.value = true;
-};
-
-const handleCreate = () => {
-  const isValid = /^[a-zA-Z0-9_-]+$/.test(newResourceName.value);
-  if (!isValid) return;
-
-  try {
-    createEndpoint({
-      name: newResourceName.value,
-      projectNanoId: projectId,
-    });
-    isModalOpen.value = false;
-  } catch (e) {
-    console.log(e);
-  }
-};
 </script>
 
 <template>
@@ -55,43 +31,14 @@ const handleCreate = () => {
     </div>
 
     <div v-else-if="project" :class="$style.workspace">
-      <aside :class="$style.sidebar">
-        <span :class="$style.sidebarTitle">{{ project.name }}</span>
-        <div :class="$style.nanoId">ID: {{ project.nanoId }}</div>
-
-        <QSeparator class="q-my-md" />
-
-        <div class="flex justify-between items-center q-mb-sm">
-          <p class="text-grey-6 text-caption q-ma-none">Эндпоинты</p>
-          <QBtn flat round size="sm" color="secondary" icon="add" @click="openModal" />
-        </div>
-
-        <div v-if="isResourcesLoading" class="text-center q-pa-md">
-          <QSpinner color="secondary" size="1.5em" />
-        </div>
-
-        <QList v-else-if="resources && resources.length > 0" padding class="rounded-borders">
-          <QItem
-            v-for="res in resources"
-            :key="res.id"
-            clickable
-            v-ripple
-            :class="$style.resourceItem"
-            @click="selectedResourceId = res.id"
-          >
-            <QItemSection avatar style="min-width: 36px">
-              <QIcon name="api" size="xs" color="grey-7" />
-            </QItemSection>
-            <QItemSection>
-              <QItemLabel class="text-weight-medium">/{{ res.name }}</QItemLabel>
-            </QItemSection>
-          </QItem>
-        </QList>
-
-        <div v-else class="text-grey-5 text-caption text-center q-mt-md">
-          Пусто. Создайте первый эндпоинт.
-        </div>
-      </aside>
+      <ProjectSidebarWidget
+        :project="project"
+        :resources="resources"
+        :is-loading-resources="isResourcesLoading"
+        :selected-resource-id="selectedResourceId"
+        @select="selectedResourceId = $event"
+        @create="isModalOpen = true"
+      />
 
       <main :class="$style.mainContent">
         <SchemaEditorWidget
@@ -112,46 +59,7 @@ const handleCreate = () => {
       <h2>Проект не найден</h2>
     </div>
 
-    <QDialog v-model="isModalOpen" persistent>
-      <QCard style="min-width: 350px; border-radius: 8px">
-        <QCardSection class="row items-center q-pb-none">
-          <div class="text-h6" style="font-weight: 600">Новый эндпоинт</div>
-          <QSpace />
-          <QBtn icon="close" flat round dense v-close-popup />
-        </QCardSection>
-
-        <QCardSection class="q-pt-md">
-          <div class="text-caption text-grey-7 q-mb-sm">
-            Введите имя пути. Например: <strong>users</strong>, <strong>posts</strong>
-          </div>
-          <QInput
-            v-model="newResourceName"
-            outlined
-            dense
-            color="secondary"
-            prefix="/"
-            autofocus
-            :rules="[
-              (val) => !!val || 'Обязательное поле',
-              (val) => /^[a-zA-Z0-9_-]+$/.test(val) || 'Только латиница, цифры, - и _',
-            ]"
-          />
-        </QCardSection>
-
-        <QCardActions align="right" class="q-pa-md">
-          <QBtn flat label="Отмена" color="grey-7" no-caps v-close-popup />
-          <QBtn
-            unelevated
-            label="Создать"
-            color="secondary"
-            no-caps
-            :loading="isCreating"
-            :disable="!newResourceName || !/^[a-zA-Z0-9_-]+$/.test(newResourceName)"
-            @click="handleCreate"
-          />
-        </QCardActions>
-      </QCard>
-    </QDialog>
+    <CreateResourceModal v-model="isModalOpen" :project-nano-id="projectId" />
   </div>
 </template>
 
@@ -165,50 +73,11 @@ const handleCreate = () => {
 .workspace {
   display: flex;
   flex-grow: 1;
-  height: calc(100vh); /* Вычитаем высоту шапки */
-}
-
-.sidebar {
-  width: 280px;
-  background-color: #fafafa;
-  border-right: 1px solid #eaeaea;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-}
-
-.sidebarTitle {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0 0 4px 0;
-  color: #111;
-}
-
-.nanoId {
-  font-family: monospace;
-  font-size: 12px;
-  color: #666;
-  background: #eee;
-  padding: 2px 6px;
-  border-radius: 4px;
-  width: fit-content;
-}
-
-.resourceItem {
-  border-radius: 6px;
-  margin-bottom: 4px;
-  &:hover {
-    background-color: #f0f8f7;
-  }
 }
 
 .mainContent {
   flex-grow: 1;
   padding: 0 32px;
-}
-
-.contentHeader {
-  margin-bottom: 24px;
 }
 
 .loader,
