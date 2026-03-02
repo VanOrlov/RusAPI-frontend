@@ -1,0 +1,1 @@
+export { useUpdateSchema } from './model/use-update-schema'

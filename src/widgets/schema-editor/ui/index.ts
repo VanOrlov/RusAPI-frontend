@@ -1,0 +1,1 @@
+export { default as SchemaEditorWidget } from './SchemaEditorWidget.vue'

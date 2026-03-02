@@ -1,5 +1,5 @@
 import { API } from '../api';
-import type { CreateResourcePayload, ResourceDto } from '../dto';
+import type { CreateResourcePayload, ResourceDto, UpdateSchemaPayload } from '../dto';
 
 export const resources = {
   /** Получить все ресурсы конкретного проекта */
@@ -10,6 +10,12 @@ export const resources = {
   /** Создать новый ресурс */
   async create(payload: CreateResourcePayload): Promise<ResourceDto> {
     const { data } = await API.post<ResourceDto>('/resources', payload);
+    return data;
+  },
+  async updateResourceSchema(payload: UpdateSchemaPayload): Promise<ResourceDto> {
+    const { data } = await API.patch<ResourceDto>(`/resources/${payload.resourceId}/schema`, {
+      schema: payload.schema,
+    });
     return data;
   },
 };

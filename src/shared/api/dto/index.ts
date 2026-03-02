@@ -98,3 +98,14 @@ export interface CreateResourcePayload {
   name: string;
   projectNanoId: string;
 }
+
+export interface SchemaFieldDto {
+  name: string;
+  type: string;
+}
+
+export interface UpdateSchemaPayload {
+  resourceId: string;
+  projectNanoId: string; // Передаем, чтобы правильно сбросить кэш списка
+  schema: SchemaFieldDto[];
+}

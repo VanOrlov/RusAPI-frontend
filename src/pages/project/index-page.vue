@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useProjectQuery } from 'src/entities/project/model/project.query';
 import { useResourcesQuery } from 'src/entities/resource/model/resources.query';
 import { useCreateResource } from 'src/features/create-resource';
+import { SchemaEditorWidget } from 'src/widgets/schema-editor/ui';
 
 const route = useRoute();
 const projectId = route.params.id as string;
@@ -16,6 +17,15 @@ const { mutate: createEndpoint, isLoading: isCreating } = useCreateResource();
 
 const isModalOpen = ref(false);
 const newResourceName = ref('');
+
+// Храним ID выбранного эндпоинта
+const selectedResourceId = ref<string | null>(null);
+
+// Вычисляем сам объект выбранного ресурса из списка
+const selectedResource = computed(() => {
+  if (!resources.value || !selectedResourceId.value) return null;
+  return resources.value.find((r) => r.id === selectedResourceId.value) || null;
+});
 
 const openModal = () => {
   newResourceName.value = '';
@@ -67,6 +77,7 @@ const handleCreate = () => {
             clickable
             v-ripple
             :class="$style.resourceItem"
+            @click="selectedResourceId = res.id"
           >
             <QItemSection avatar style="min-width: 36px">
               <QIcon name="api" size="xs" color="grey-7" />
@@ -83,8 +94,16 @@ const handleCreate = () => {
       </aside>
 
       <main :class="$style.mainContent">
-        <div :class="$style.contentHeader">
-          <span class="text-h5 q-ma-none">Выберите эндпоинт</span>
+        <SchemaEditorWidget
+          v-if="selectedResource"
+          :resource="selectedResource"
+          :project-nano-id="projectId"
+        />
+
+        <div v-else class="text-center q-mt-xl">
+          <QIcon name="touch_app" size="64px" color="grey-4" />
+          <h3 class="text-h6 text-grey-8 q-mt-md">Выберите эндпоинт слева</h3>
+          <p class="text-grey-6">Чтобы настроить его схему данных</p>
         </div>
       </main>
     </div>
@@ -185,7 +204,7 @@ const handleCreate = () => {
 
 .mainContent {
   flex-grow: 1;
-  padding: 32px;
+  padding: 0 32px;
 }
 
 .contentHeader {
