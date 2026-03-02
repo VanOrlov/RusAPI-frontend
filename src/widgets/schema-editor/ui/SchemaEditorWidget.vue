@@ -15,12 +15,12 @@ const activeTab = ref('schema');
 <template>
   <div :class="$style.editor">
     <div :class="$style.header">
-      <h2 :class="$style.title">
+      <span :class="$style.title">
         Эндпоинт: <span class="text-secondary">/{{ resource.name }}</span>
-      </h2>
+      </span>
 
       <a :href="`https://fakerjs.dev/api`" target="_blank" :class="$style.publicLink">
-        <QIcon name="open_in_new" size="xs" />
+        <QIcon name="open_in_new" size="10px" />
         Открыть GET API
       </a>
     </div>
@@ -58,6 +58,10 @@ const activeTab = ref('schema');
   border-radius: 8px;
   padding: 32px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
 }
 
 .header {
@@ -89,6 +93,11 @@ const activeTab = ref('schema');
 
   &:hover {
     background: rgba(38, 166, 154, 0.2);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 10px;
+    padding: 4px 6px;
   }
 }
 </style>

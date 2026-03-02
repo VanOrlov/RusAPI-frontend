@@ -57,37 +57,65 @@ const onSubmit = async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  max-width: 468px;
 }
+
 .formTitle {
   width: 100%;
   padding: 10px 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 600;
+
+  @media (min-width: 768px) {
+    font-size: 30px; 
+  }
 }
+
 .formContainer {
-  width: 468px;
+  width: 100%;
   padding: 24px;
   border-radius: 10px;
   box-shadow: 0 0 3px 0px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+
+  @media (max-width: 400px) {
+    padding: 16px; 
+  }
 }
+
 .formFooter {
   width: 100%;
   padding: 10px 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: 14px;
+  text-align: center;
+
+  @media (min-width: 768px) {
+    font-size: 16px;
+  }
 }
+
 .formFooterLink {
   margin-left: 5px;
-  color: #26a699;
+  color: #26a69a;
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
+
 .pwsInput {
   position: relative;
 }
+
 .loginBtn {
   width: 100%;
   margin-top: 15px;

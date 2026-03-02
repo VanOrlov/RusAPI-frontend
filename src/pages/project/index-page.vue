@@ -5,6 +5,7 @@ import { useProjectQuery } from 'src/entities/project/model/project.query';
 import { useResourcesQuery } from 'src/entities/resource/model/resources.query';
 import { SchemaEditorWidget } from 'src/widgets/schema-editor/ui';
 import { ProjectSidebarWidget } from 'src/widgets/project-sidebar/ui';
+import { CreateResourceModal } from 'src/features/create-resource';
 
 const route = useRoute();
 const projectId = route.params.id as string;
@@ -82,10 +83,10 @@ const selectedResource = computed(() => {
 
 .mainContent {
   flex-grow: 1;
-  padding: 16px;
+  padding: 0 16px;
 
-  @media (min-width: 768px) {
-    padding: 32px;
+  @media (max-width: 768px) {
+    padding: 16px 0;
   }
 }
 

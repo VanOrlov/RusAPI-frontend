@@ -10,7 +10,7 @@ const router = useRouter();
 const onSubmit = async () => {
   const success = await signupStore.register();
   if (success) {
-    await router.push({ name: ROUTE_NAMES.MAIN });
+    await router.push({ name: ROUTE_NAMES.ACCOUNT });
   }
 };
 </script>
@@ -38,16 +38,14 @@ const onSubmit = async () => {
           label="Пароль"
           type="password"
           :rules="passwordRules"
-        >
-        </QInput>
+        />
         <QInput
           v-model="signupStore.signupData.repeatPassword"
           color="secondary"
-          label="Пароль"
+          label="Повторите пароль"
           type="password"
           :rules="[(val) => val === signupStore.signupData.password || 'Пароль не совпадает']"
-        >
-        </QInput>
+        />
         <QBtn
           :disable="!signupStore.isSignupDataValid"
           @click="onSubmit"
@@ -69,39 +67,66 @@ const onSubmit = async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%; /* Позволяем контейнеру сжиматься */
+  max-width: 468px; /* Но не даем растягиваться больше нужного */
 }
+
 .formTitle {
   width: 100%;
   padding: 10px 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
+  font-size: 24px; /* На мобилках шрифт чуть меньше */
   font-weight: 600;
+
+  @media (min-width: 768px) {
+    font-size: 30px; /* На десктопе возвращаем большой размер */
+  }
 }
+
 .formContainer {
-  width: 468px;
+  width: 100%; /* Убрали жесткие 468px, теперь ширина 100% от родителя */
   padding: 24px;
   border-radius: 10px;
   box-shadow: 0 0 3px 0px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff; /* Добавил белый фон на всякий случай, если фон страницы серый */
+
+  @media (max-width: 400px) {
+    padding: 16px; /* На очень узких экранах (iPhone SE) уменьшаем внутренние отступы */
+  }
 }
+
 .pwsInput {
   position: relative;
 }
+
 .signupBtn {
   width: 100%;
   margin-top: 15px;
 }
+
 .formFooter {
   width: 100%;
   padding: 10px 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: 14px; /* Чуть уменьшил для адаптивности */
+
+  @media (min-width: 768px) {
+    font-size: 16px;
+  }
 }
+
 .formFooterLink {
   margin-left: 5px;
-  color: #26a699;
+  color: #26a69a; /* Поправил код цвета на стандартный Quasar Secondary, если я правильно помню твой конфиг */
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 </style>
