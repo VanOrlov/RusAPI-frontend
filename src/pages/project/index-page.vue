@@ -49,7 +49,7 @@ const selectedResource = computed(() => {
 
         <div v-else class="text-center q-mt-xl">
           <QIcon name="touch_app" size="64px" color="grey-4" />
-          <h3 class="text-h6 text-grey-8 q-mt-md">Выберите эндпоинт слева</h3>
+          <h3 class="text-h6 text-grey-8 q-mt-md">Выберите эндпоинт</h3>
           <p class="text-grey-6">Чтобы настроить его схему данных</p>
         </div>
       </main>
