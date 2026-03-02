@@ -73,11 +73,20 @@ const selectedResource = computed(() => {
 .workspace {
   display: flex;
   flex-grow: 1;
+  flex-direction: column; 
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 }
 
 .mainContent {
   flex-grow: 1;
-  padding: 0 32px;
+  padding: 16px;
+
+  @media (min-width: 768px) {
+    padding: 32px;
+  }
 }
 
 .loader,

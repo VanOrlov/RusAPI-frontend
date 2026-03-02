@@ -30,7 +30,7 @@ const emit = defineEmits<{
       <QSpinner color="secondary" size="1.5em" />
     </div>
 
-    <QList v-else-if="resources && resources.length > 0" padding class="rounded-borders">
+    <QList v-else-if="resources && resources.length > 0" padding :class="['rounded-borders', $style.listModified]">
       <QItem
         v-for="res in resources"
         :key="res.id"
@@ -56,12 +56,42 @@ const emit = defineEmits<{
 
 <style lang="scss" module>
 .sidebar {
-  width: 280px;
+  width: 100%; /* На мобилке на всю ширину */
   background-color: #fafafa;
-  border-right: 1px solid #eaeaea;
-  padding: 24px;
+  border-bottom: 1px solid #eaeaea; /* Линия снизу, а не справа */
+  padding: 16px;
   display: flex;
   flex-direction: column;
+
+  @media (min-width: 768px) {
+    width: 280px; /* На десктопе фиксированная ширина */
+    border-right: 1px solid #eaeaea;
+    border-bottom: none;
+    padding: 24px;
+    height: calc(100vh - 60px); /* Чтобы сайдбар не скроллился вместе с сайтом */
+    position: sticky;
+    top: 0;
+  }
+}
+
+/* Настройки для горизонтального скролла на мобилках */
+.listModified {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  gap: 8px;
+  padding: 8px 0;
+  
+  /* Прячем ползунок скроллбара, чтобы было красиво */
+  &::-webkit-scrollbar { display: none; }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  @media (min-width: 768px) {
+    flex-direction: column; /* Возвращаем в столбик на десктопе */
+    overflow-x: visible;
+    gap: 0;
+  }
 }
 
 .sidebarTitle {
@@ -83,14 +113,20 @@ const emit = defineEmits<{
 
 .resourceItem {
   border-radius: 6px;
-  margin-bottom: 4px;
+  margin-bottom: 0;
+  white-space: nowrap;
+  
+  @media (min-width: 768px) {
+    margin-bottom: 4px;
+  }
+
   &:hover {
     background-color: #f0f8f7;
   }
 }
 
 .activeItem {
-  background-color: #e0f2f1; /* Легкий зеленый для активного элемента */
+  background-color: #e0f2f1;
   color: #26a69a;
 }
 </style>

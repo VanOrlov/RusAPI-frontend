@@ -141,7 +141,7 @@ watch(
           color="negative"
           icon="delete"
           size="sm"
-          class="q-mt-md"
+          :class="$style.deleteBtn"
           @click="removeField(index)"
         />
       </div>
@@ -168,18 +168,38 @@ watch(
 
 .fieldRow {
   display: flex;
+  flex-direction: column; /* На мобилке элементы друг под другом */
   align-items: flex-start;
-  gap: 16px;
+  gap: 12px;
   background: #fafafa;
   padding: 16px;
   border-radius: 8px;
   border: 1px solid #f0f0f0;
+
+  @media (min-width: 768px) {
+    flex-direction: row; /* На десктопе в ряд */
+    gap: 16px;
+  }
 }
 
 .inputWrapper {
-  flex: 1;
+  width: 100%; /* На мобилке инпут занимает все 100% ширины */
   display: flex;
   flex-direction: column;
   gap: 4px;
+
+  @media (min-width: 768px) {
+    flex: 1; /* На десктопе занимает свободную часть строки */
+    width: auto;
+  }
+}
+
+.deleteBtn {
+  align-self: flex-end; /* На мобилке кнопка корзины прижата к правому краю */
+
+  @media (min-width: 768px) {
+    align-self: center; /* На десктопе выровнена по центру строки */
+    margin-top: 20px;
+  }
 }
 </style>

@@ -23,14 +23,14 @@ const handleGenerate = () => {
 <template>
   <div>
     <div :class="$style.generatePanel">
-      <div class="flex items-center" style="gap: 16px">
+      <div :class="$style.generateControls">
         <QInput
           v-model.number="recordsCount"
           type="number"
           outlined
           dense
           label="Количество (шт)"
-          style="width: 140px"
+          style="min-width: 140px"
           :min="1"
           :max="100"
         />
@@ -44,9 +44,7 @@ const handleGenerate = () => {
           @click="handleGenerate"
         />
       </div>
-      <p class="text-caption text-grey-6 q-ma-none">
-        Внимание: Текущие данные будут перезаписаны!
-      </p>
+      <p class="text-caption text-grey-6 q-ma-none">Внимание: Текущие данные будут перезаписаны!</p>
     </div>
 
     <div :class="$style.jsonViewer">
@@ -64,13 +62,35 @@ const handleGenerate = () => {
 <style lang="scss" module>
 .generatePanel {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column; /* Мобилка: Текст-предупреждение падает вниз */
+  align-items: flex-start;
+  gap: 12px;
   background: #f9f9f9;
   padding: 16px;
   border-radius: 8px;
   margin-bottom: 16px;
   border: 1px solid #eaeaea;
+
+  @media (min-width: 768px) {
+    flex-direction: row; /* Десктоп */
+    justify-content: space-between;
+    align-items: center;
+    gap: 0;
+  }
+}
+
+.generateControls {
+  display: flex;
+  flex-direction: column; /* Мобилка: Инпут и кнопка друг под другом */
+  width: 100%;
+  gap: 8px;
+
+  @media (min-width: 768px) {
+    flex-direction: row; /* Десктоп */
+    width: auto;
+    gap: 16px;
+    align-items: center;
+  }
 }
 
 .jsonViewer {
