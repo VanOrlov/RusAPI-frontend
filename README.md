@@ -1,43 +1,59 @@
-# RusAPI (frontend)
+# 🚀 RusAPI — Frontend
 
-First Russian Mock API project
+**RusAPI** — это современный SaaS-сервис для разработчиков, позволяющий в пару кликов создавать мок-серверы (Mock API) и генерировать реалистичные данные по кастомным схемам. Больше не нужно ждать готовности бэкенда или хардкодить JSON в компонентах!
 
-## Install the dependencies
+## 🛠 Технологический стек
 
+Проект написан с использованием современных стандартов веб-разработки:
+
+* **Фреймворк:** [Vue 3](https://vuejs.org/) (Composition API, `<script setup>`)
+* **UI-библиотека:** [Quasar Framework](https://quasar.dev/) (Vite builder)
+* **Язык:** [TypeScript](https://www.typescriptlang.org/) (Строгая типизация всех DTO и API)
+* **Стейт-менеджмент / Кэширование:** [Pinia](https://pinia.vuejs.org/) + Pinia Colada (для работы с асинхронными запросами)
+* **Роутинг:** [Vue Router](https://router.vuejs.org/)
+* **Анимации:** [@vueuse/motion](https://motion.vueuse.org/) (Плавные появления элементов при скролле)
+* **Генерация данных:** [Faker.js](https://fakerjs.dev/) (используется для подбора типов полей)
+
+## 🏗 Архитектура (Feature-Sliced Design)
+
+Проект строго следует методологии **Feature-Sliced Design (FSD)**, что обеспечивает высокую масштабируемость и переиспользуемость кода. 
+
+Структура директории `src/`:
+* `app/` — Инициализация приложения, глобальные стили, роутер, сторы (Pinia), файлы загрузки (boot).
+* `pages/` — Страницы приложения (Лендинг, Авторизация, Список проектов, Редактор эндпоинта).
+* `widgets/` — Самостоятельные крупные блоки (Header, Footer, Sidebar, Формы конструктора).
+* `features/` — Бизнес-логика и действия пользователя (Создание проекта, Генерация данных, Авторизация).
+* `entities/` — Бизнес-сущности (Карточка проекта, Пользователь, Модели API).
+* `shared/` — Переиспользуемый код (UI-компоненты, API-клиент (Axios), DTO интерфейсы, утилиты.
+
+## 🚀 Локальный запуск
+
+### Требования
+* Node.js (рекомендуется v22 или v20)
+* npm, yarn или pnpm
+
+### Установка зависимостей
 ```bash
-yarn
-# or
 npm install
-```
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
-
-```bash
+npm run dev
+# или, если установлен Quasar CLI глобально:
 quasar dev
-```
 
-### Lint the files
-
-```bash
-yarn lint
-# or
-npm run lint
-```
-
-### Format the files
-
-```bash
-yarn format
-# or
-npm run format
-```
-
-### Build the app for production
-
-```bash
+npm run build
+# или
 quasar build
 ```
+Готовые статические файлы появятся в папке dist/spa
 
-### Customize the configuration
+## ✨ Ключевые фичи фронтенда
 
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+* **Адаптивный дизайн (Mobile-first):** Приложение корректно работает на любых устройствах, включая мобильные телефоны (сворачивающийся сайдбар, гибкие сетки).
+* **Конструктор схем:** Интерактивный редактор полей с поиском и фильтрацией типов данных (под капотом Faker.js).
+* **Glassmorphism & Motion UI:** Современный дизайн с размытием фона, мягкими тенями и каскадными анимациями элементов.
+* **Smart Caching:** Использование хуков-мутаций (`useQuery` / `useMutation`) для автоматического обновления кэша интерфейса после изменения данных.
+
+## 🤝 Контакты / Авторы
+
+* **VanOrlov** — [GitHub](https://github.com/VanOrlov)
+* **Ссылка на бэкенд репозиторий:** [RusAPI Backend](https://github.com/VanOrlov/RusAPI-backend)
