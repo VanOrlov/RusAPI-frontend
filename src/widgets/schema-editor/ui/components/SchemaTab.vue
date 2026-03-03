@@ -72,16 +72,6 @@ watch(
       <p class="text-grey-7 q-ma-none">
         Опишите поля, из которых будет состоять каждый объект в этом эндпоинте.
       </p>
-      <QBtn
-        color="secondary"
-        label="Сохранить схему"
-        unelevated
-        no-caps
-        icon="save"
-        :loading="isSaving"
-        :disable="!isDirty || !isValid"
-        @click="handleSave"
-      />
     </div>
 
     <div :class="$style.fieldsList">
@@ -147,15 +137,26 @@ watch(
       </div>
     </div>
 
-    <QBtn
-      outline
-      color="secondary"
-      icon="add"
-      label="Добавить поле"
-      no-caps
-      class="q-mt-md"
-      @click="addField"
-    />
+    <div :class="$style.btnsContainer">
+      <QBtn
+        outline
+        color="secondary"
+        icon="add"
+        label="Добавить поле"
+        no-caps
+        @click="addField"
+      />
+      <QBtn
+        color="secondary"
+        label="Сохранить схему"
+        unelevated
+        no-caps
+        icon="save"
+        :loading="isSaving"
+        :disable="!isDirty || !isValid"
+        @click="handleSave"
+      />
+    </div>
   </div>
 </template>
 
@@ -201,5 +202,12 @@ watch(
     align-self: center; /* На десктопе выровнена по центру строки */
     margin-top: 20px;
   }
+}
+
+.btnsContainer {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px
 }
 </style>

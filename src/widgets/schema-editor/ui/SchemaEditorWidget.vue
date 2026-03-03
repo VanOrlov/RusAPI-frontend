@@ -37,10 +37,12 @@ const activeTab = ref('schema');
       class="text-grey q-mt-md"
       active-color="secondary"
       indicator-color="secondary"
+      outside-arrows
+      no-caps
       align="left"
     >
-      <QTab name="schema" label="Конструктор схемы" icon="account_tree" />
-      <QTab name="data" label="Сгенерированные данные" icon="data_object" />
+      <QTab name="schema" label="Схема" icon="account_tree" />
+      <QTab name="data" label="Данные" icon="data_object" />
     </QTabs>
 
     <QSeparator class="q-mb-md" />

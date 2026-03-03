@@ -3,6 +3,7 @@ import {
   UserProfileWidget,
   UserSecurityWidget,
   UserDangerZoneWidget,
+  UserSessionWidget
 } from 'src/widgets/account-settings/ui';
 </script>
 
@@ -15,6 +16,9 @@ import {
     <div :class="$style.settingsWidgetsContainer">
       <div :class="$style.securityWidgetContainer">
         <UserSecurityWidget />
+      </div>
+      <div :class="$style.sessionsWidgetContainer">
+        <UserSessionWidget />
       </div>
 
       <div :class="$style.dangerZoneWidgetContainer">
@@ -31,6 +35,9 @@ import {
   margin: 0 auto;
   display: flex;
   gap: 32px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 }
 
 .pageTitle {
@@ -48,5 +55,8 @@ import {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+.sessionsWidgetContainer {
+  width: 100%;
 }
 </style>

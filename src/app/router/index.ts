@@ -45,8 +45,8 @@ export default defineRouter(function (/* { store, ssrContext } */) {
       return;
     }
 
-    if (to.meta.guestOnly && !isAuthenticated) {
-      next({ name: ROUTE_NAMES.MAIN });
+    if (to.meta.guestOnly && isAuthenticated) {
+      next({ name: ROUTE_NAMES.ACCOUNT });
       return;
     }
 

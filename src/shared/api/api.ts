@@ -40,7 +40,7 @@ API.interceptors.response.use(
     if (error.response.status === 401 && !isAuthRequest) {
       if (originalRequest.url?.includes('/auth/refresh')) {
         clearToken();
-        window.location.href = '/login';
+        window.location.href = '/login?expired=true';
         return Promise.reject(Error(error));
       }
 
@@ -78,7 +78,7 @@ API.interceptors.response.use(
         } catch (refreshError) {
           processQueue(refreshError, null);
           clearToken();
-          window.location.href = '/login';
+          window.location.href = '/login?expired=true';
           return Promise.reject(new Error(refreshError as string));
         } finally {
           isRefreshing = false;

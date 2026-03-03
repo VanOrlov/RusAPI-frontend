@@ -14,7 +14,7 @@
     </QCardSection>
 
     <QCardActions align="right" :class="[$style.actions, $style.dangerActions]">
-      <QBtn color="negative" label="Удалить аккаунт" unelevated no-caps />
+      <QBtn color="negative" label="Удалить аккаунт" unelevated no-caps disable title="Функция недоступна"/>
     </QCardActions>
   </QCard>
 </template>

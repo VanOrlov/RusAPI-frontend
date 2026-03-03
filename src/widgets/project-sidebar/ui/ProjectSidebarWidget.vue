@@ -43,8 +43,8 @@ const router = useRouter();
     <QSeparator class="q-my-md" />
 
     <div class="flex justify-between items-center q-mb-sm">
-      <p class="text-grey-6 text-caption q-ma-none">Эндпоинты</p>
-      <QBtn flat round size="sm" color="secondary" icon="add" @click="emit('create')" />
+      <p class="text-grey-6 text-body2 q-ma-none">Эндпоинты</p>
+      <QBtn size="10px" color="secondary" icon="add" @click="emit('create')" />
     </div>
 
     <div v-if="isLoadingResources" class="text-center q-pa-md">

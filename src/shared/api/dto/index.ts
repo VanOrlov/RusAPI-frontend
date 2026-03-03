@@ -115,3 +115,12 @@ export interface GenerateDataPayload {
   projectNanoId: string;
   count?: number;
 }
+
+export interface Session {
+  sessionId: string;
+  ip: string;
+  device: string;
+  createdAt: string;
+  lastActive: string;
+  isCurrent?: boolean
+}

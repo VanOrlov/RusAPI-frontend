@@ -88,10 +88,10 @@ export default defineConfig(() => {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver
     devServer: {
-      https: {
-        key: 'localhost-key.pem',
-        cert: 'localhost.pem',
-      },
+      // https: {
+      //   key: 'localhost-key.pem',
+      //   cert: 'localhost.pem',
+      // },
       open: false, // opens browser window automatically
     },
 
@@ -116,7 +116,7 @@ export default defineConfig(() => {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Notify'],
+      plugins: ['Notify', 'Dialog'],
     },
 
     // animations: 'all', // --- includes all animations
