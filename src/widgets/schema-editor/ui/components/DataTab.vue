@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useGenerateData } from 'src/features/generate-data';
 import type { ResourceDto } from 'src/shared/api/dto';
+import type { Rule } from 'src/shared/types';
+import { isRulesValid, resetValidation, runInputValidate } from 'src/shared/utils';
+import { QInput } from 'quasar';
 
 const props = defineProps<{
   resource: ResourceDto;
@@ -10,14 +13,25 @@ const props = defineProps<{
 
 const { mutate: generateData, isLoading: isGenerating } = useGenerateData();
 const recordsCount = ref(10);
+const recordsInputRef = ref<InstanceType<typeof QInput> | null>(null);
+
+const recordsCountValid = computed(() => {
+  return isRulesValid(recordsCountRules, `${recordsCount.value}`);
+});
 
 const handleGenerate = () => {
+  if (!recordsCountValid.value) return;
   generateData({
     resourceId: props.resource.id,
     projectNanoId: props.projectNanoId,
-    count: recordsCount.value,
+    count: Math.round(Number(recordsCount.value)),
   });
 };
+
+const recordsCountRules: Rule[] = [
+  (val: string) => Number(val) <= 100 || 'Максимум 100',
+  (val: string) => Number(val) >= 1 || 'Минимум 1',
+];
 </script>
 
 <template>
@@ -25,14 +39,16 @@ const handleGenerate = () => {
     <div :class="$style.generatePanel">
       <div :class="$style.generateControls">
         <QInput
+          ref="recordsInputRef"
           v-model.number="recordsCount"
           type="number"
           outlined
           dense
           label="Количество (шт)"
           style="min-width: 140px"
-          :min="1"
-          :max="100"
+          :rules="recordsCountRules"
+          @blur="resetValidation(recordsInputRef)"
+          @focus="runInputValidate(recordsInputRef)"
         />
         <QBtn
           color="secondary"
@@ -41,7 +57,9 @@ const handleGenerate = () => {
           unelevated
           no-caps
           :loading="isGenerating"
+          :disable="!recordsCountValid"
           @click="handleGenerate"
+          style="height: 40px"
         />
       </div>
       <p class="text-caption text-grey-6 q-ma-none">Внимание: Текущие данные будут перезаписаны!</p>
@@ -89,7 +107,7 @@ const handleGenerate = () => {
     flex-direction: row; /* Десктоп */
     width: auto;
     gap: 16px;
-    align-items: center;
+    align-items: flex-start;
   }
 }
 

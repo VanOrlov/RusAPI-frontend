@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { clearToken, setToken } from './methods/token';
-
 export const API = axios.create({
   baseURL: process.env.API_URL!,
   withCredentials: true,

@@ -1,12 +1,16 @@
 <script setup lang="ts">
+import { QInput } from 'quasar';
 import { useUserQuery } from 'src/entities/user/model/user.query';
 import { useChangeProfile } from 'src/features/change-profile/model/use-change-profile';
+import { nameRules } from 'src/features/signup/model/rules';
+import { resetValidation, runInputValidate } from 'src/shared/utils';
 import { computed, ref, watch } from 'vue';
 const { data, isLoading } = useUserQuery(() => true);
 const { mutate, isLoading: isChangeProfileLoading } = useChangeProfile();
 
 const name = ref('');
 const email = ref('');
+const nameInput = ref<InstanceType<typeof QInput> | null>(null);
 
 const isDirty = computed(() => {
   if (isLoading.value) return false;
@@ -50,13 +54,32 @@ watch(
       <div :class="$style.inputGroup">
         <label :class="$style.label">Ваше имя</label>
         <QSkeleton v-if="isLoading" type="QInput" />
-        <QInput v-else v-model="name" outlined dense color="secondary" class="custom-input" />
+        <QInput
+          v-else
+          ref="nameInput"
+          v-model="name"
+          outlined
+          dense
+          color="secondary"
+          class="custom-input"
+          :rules="nameRules"
+          @blur="resetValidation(nameInput)"
+          @focus="runInputValidate(nameInput)"
+        />
       </div>
 
       <div :class="$style.inputGroup">
         <label :class="$style.label">Email</label>
         <QSkeleton v-if="isLoading" type="QInput" />
-        <QInput v-else v-model="email" outlined dense disable readonly class="custom-input" />
+        <QInput
+          v-else
+          v-model="email"
+          outlined
+          dense
+          disable
+          readonly
+          class="custom-input"
+        />
         <span :class="$style.hint"
           >Мы используем этот email для важных уведомлений. Для смены адреса обратитесь в
           поддержку.</span
@@ -66,7 +89,15 @@ watch(
 
     <QCardActions :class="$style.cardFooter">
       <span :class="$style.footerNote">Пожалуйста, используйте максимум 32 символа.</span>
-      <QBtn :disable="!isDirty" :loading="isChangeProfileLoading" @click="handleSubmit" color="secondary" label="Сохранить" unelevated no-caps />
+      <QBtn
+        :disable="!isDirty"
+        :loading="isChangeProfileLoading"
+        @click="handleSubmit"
+        color="secondary"
+        label="Сохранить"
+        unelevated
+        no-caps
+      />
     </QCardActions>
   </QCard>
 </template>

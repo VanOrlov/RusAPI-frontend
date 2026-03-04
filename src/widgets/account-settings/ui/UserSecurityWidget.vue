@@ -1,18 +1,21 @@
 <script setup lang="ts">
+import { QInput } from 'quasar';
 import { passwordRules, useChangePassword } from 'src/features/change-password';
+import { resetValidation, runInputValidate } from 'src/shared/utils';
 import { computed, ref } from 'vue';
-
-
 
 const oldPassword = ref('');
 const newPassword = ref('');
+const newPassInputRef = ref<InstanceType<typeof QInput> | null>(null);
 
 const { mutate, isLoading: isLoadingChangePass } = useChangePassword();
 
 const isValid = computed(() => {
-  return passwordRules.every((rule) => {
-    return rule(newPassword.value);
-  }) && !!oldPassword.value;
+  return (
+    passwordRules.every((rule) => {
+      return rule(newPassword.value);
+    }) && !!oldPassword.value
+  );
 });
 
 const handleSubmit = () => {
@@ -26,7 +29,9 @@ const handleSubmit = () => {
 
     oldPassword.value = '';
     newPassword.value = '';
-  } catch {void 0}
+  } catch {
+    void 0;
+  }
 };
 </script>
 
@@ -47,12 +52,15 @@ const handleSubmit = () => {
           color="secondary"
         />
         <QInput
+          ref="newPassInputRef"
           v-model="newPassword"
           outlined
           type="password"
           label="Новый пароль"
           color="secondary"
           :rules="passwordRules"
+          @blur="resetValidation(newPassInputRef)"
+          @focus="runInputValidate(newPassInputRef)"
         />
       </div>
     </QCardSection>
