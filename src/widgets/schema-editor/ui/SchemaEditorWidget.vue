@@ -5,10 +5,13 @@ import SchemaTab from './components/SchemaTab.vue';
 import DataTab from './components/DataTab.vue';
 import { copyText } from 'src/shared/lib/copy-to-clipboard';
 
-defineProps<{
+const props = defineProps<{
   resource: ResourceDto;
   projectNanoId: string;
 }>();
+const resourcePathForRequest = ref(
+  `${window.location.origin}/api/mock/${props.projectNanoId}/${props.resource.name}`,
+);
 
 const activeTab = ref('schema');
 </script>
@@ -20,7 +23,7 @@ const activeTab = ref('schema');
         Эндпоинт:
         <span
           :class="$style.textSecondary"
-          @click="copyText(resource.name, 'Эндпоинт успешно скопирован')"
+          @click="copyText(resourcePathForRequest, 'Эндпоинт успешно скопирован')"
           >/{{ resource.name }} <QIcon name="content_copy" size="12px" :class="$style.copyIcon"
         /></span>
       </span>
