@@ -13,9 +13,7 @@ export default defineConfig(() => {
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
 
-    boot: [
-      '~boot/motion'
-    ],
+    boot: ['~boot/motion'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
     css: ['app.scss'],
@@ -45,6 +43,9 @@ export default defineConfig(() => {
         strict: true,
         vueShim: true,
         // extendTsConfig (tsConfig) {}
+      },
+      env: {
+        API_URL: process.env.API_URL,
       },
 
       vueRouterMode: 'history', // available values: 'hash', 'history'

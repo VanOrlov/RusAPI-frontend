@@ -8,6 +8,8 @@ RUN npm ci
 
 ARG API_URL
 
+ENV API_URL=$API_URL
+
 RUN echo "API_URL=$API_URL" > .env.production
 
 RUN npm run build
