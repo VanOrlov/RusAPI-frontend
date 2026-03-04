@@ -84,6 +84,7 @@ watch(
             dense
             placeholder="Например: id, email, price"
             class="custom-input"
+            :disable="index === 0"
             :rules="[(val) => /^[a-zA-Z0-9_]+$/.test(val) || 'Только a-z, 0-9, _']"
             hide-bottom-space
           />
@@ -103,6 +104,7 @@ watch(
             fill-input
             input-debounce="0"
             @filter="filterFn"
+            :disable="index === 0"
             placeholder="Выберите или начните вводить..."
             class="custom-input"
           >
@@ -131,6 +133,7 @@ watch(
           color="negative"
           icon="delete"
           size="sm"
+          v-if="index !== 0"
           :class="$style.deleteBtn"
           @click="removeField(index)"
         />

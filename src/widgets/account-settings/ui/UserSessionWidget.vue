@@ -3,11 +3,14 @@ import { useQuasar } from 'quasar';
 import { useSessionsQuery } from 'src/entities/session/model/sessions.query';
 import { useDeleteSession } from 'src/features/delete-session/model/use-delete-session';
 import { useLogout } from 'src/features/logout/model/use-logout';
+import { ref } from 'vue';
 
 const $q = useQuasar()
 const { data, isLoading, error } = useSessionsQuery();
 const { mutate, isLoading: isLoadingDeleteSession } = useDeleteSession();
 const { logout } = useLogout()
+
+const deletingSessionId = ref<string | null>(null);
 
 // Форматирование даты
 const formatDate = (dateString: string) => {
@@ -21,6 +24,7 @@ const formatDate = (dateString: string) => {
 };
 
 const terminateSession = (sessionId: string, isCurrentSession: boolean | undefined) => {
+  deletingSessionId.value = sessionId;
   if (isCurrentSession) {
     console.log($q)
     $q.dialog({
@@ -45,6 +49,8 @@ const terminateSession = (sessionId: string, isCurrentSession: boolean | undefin
       } catch {
         void 0;
       }
+    }).onCancel(() => {
+      deletingSessionId.value = null; 
     });
   } else {
     try {
@@ -94,7 +100,8 @@ const terminateSession = (sessionId: string, isCurrentSession: boolean | undefin
             no-caps
             label="Завершить"
             size="sm"
-            :loading="isLoadingDeleteSession"
+            :loading="isLoadingDeleteSession && deletingSessionId === session.sessionId"
+            :disable="isLoadingDeleteSession && deletingSessionId !== session.sessionId"
             @click="terminateSession(session.sessionId, session.isCurrent)"
           />
         </div>
