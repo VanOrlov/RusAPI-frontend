@@ -18,7 +18,12 @@ const formatDate = (isoString: string) => {
 </script>
 
 <template>
-  <QCard flat bordered :class="$style.projectCard">
+  <QCard
+    flat
+    bordered
+    :class="$style.projectCard"
+    @click="router.push(`/projects/${project.nanoId}`)"
+  >
     <QCardSection :class="$style.cardBody">
       <div :class="$style.cardHeader">
         <h3 :class="$style.projectName">{{ project.name }}</h3>
@@ -36,14 +41,7 @@ const formatDate = (isoString: string) => {
           <QIcon name="calendar_today" size="14px" :class="$style.metaIcon" />
           <span>Создан {{ formatDate(project.createdAt) }}</span>
         </div>
-        <QBtn
-          flat
-          round
-          color="secondary"
-          icon="arrow_forward"
-          size="sm"
-          @click="router.push(`/projects/${project.nanoId}`)"
-        />
+        <QBtn flat round color="secondary" icon="arrow_forward" size="sm" />
       </div>
     </QCardSection>
   </QCard>
