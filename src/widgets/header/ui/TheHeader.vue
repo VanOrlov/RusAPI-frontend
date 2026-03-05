@@ -27,7 +27,7 @@ const handleLogout = () => {
 </script>
 
 <template>
-  <QHeader :class="$style.header" class="bg-transparent text-black">
+  <QHeader :class="$style.header" class="bg-transparent">
     <div :class="$style.headerContainer">
       
       <div :class="$style.logoWrapper" @click="goTo('/')">
@@ -47,8 +47,7 @@ const handleLogout = () => {
 
         <template v-else-if="!isAuthenticated">
           <QBtn 
-            flat 
-            color="dark" 
+            flat
             label="Войти" 
             no-caps 
             :class="$style.ghostBtn" 
@@ -81,7 +80,7 @@ const handleLogout = () => {
                 
                 <QItem>
                   <QItemSection>
-                    <QItemLabel class="text-weight-bold text-dark">{{ user?.name || 'Пользователь' }}</QItemLabel>
+                    <QItemLabel class="text-weight-bold">{{ user?.name || 'Пользователь' }}</QItemLabel>
                     <QItemLabel caption>{{ user?.email || 'email@hidden.com' }}</QItemLabel>
                   </QItemSection>
                 </QItem>
@@ -122,12 +121,11 @@ const handleLogout = () => {
 </template>
 
 <style lang="scss" module>
-/* --- ГЛАВНЫЙ БЛОК ШАПКИ --- */
 .header {
-  background-color: rgba(255, 255, 255, 0.85) !important;
+  background-color: var(--bg-header-glass) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--header-border);
 }
 
 .headerContainer {
@@ -135,10 +133,9 @@ const handleLogout = () => {
   align-items: center;
   justify-content: space-between;
   margin-inline: 120px;
-  height: 72px; /* Чуть уменьшил высоту для компактности */
+  height: 72px;
 }
 
-/* --- ЛОГОТИП --- */
 .logoWrapper {
   display: flex;
   align-items: center;
@@ -167,14 +164,13 @@ const handleLogout = () => {
   font-weight: 800;
   letter-spacing: -0.5px;
   font-family: 'Inter', 'Segoe UI', sans-serif;
-  color: #0f172a;
+  color: var(--text-main);
 }
 
 .highlight {
-  color: #26a69a;
+  color: var(--text-secondary);
 }
 
-/* --- ПРАВАЯ ЧАСТЬ (АВТОРИЗАЦИЯ) --- */
 .actions {
   display: flex;
   align-items: center;
@@ -205,7 +201,6 @@ const handleLogout = () => {
   }
 }
 
-/* --- АВАТАР И МЕНЮ --- */
 .userProfile {
   border-radius: 50%;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -227,17 +222,16 @@ const handleLogout = () => {
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: #f8fafc;
+    background-color: var(--hover-bg);
   }
 }
 
 .logoutItem {
   &:hover {
-    background-color: #fef2f2; /* Легкий красный фон при наведении на Выход */
+    background-color: var(--danger-bg);
   }
 }
 
-/* --- АДАПТИВНОСТЬ --- */
 @media (max-width: 1024px) {
   .headerContainer {
     margin-inline: 60px;
@@ -249,7 +243,6 @@ const handleLogout = () => {
     margin-inline: 20px;
   }
   
-  /* Прячем кнопку Вход на мобилках, оставляем только Регистрацию для экономии места */
   .ghostBtn {
     display: none;
   }

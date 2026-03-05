@@ -36,7 +36,7 @@ const handleSubmit = () => {
 </script>
 
 <template>
-  <QCard flat bordered :class="$style.widgetCard">
+  <QCard flat bordered :class="$style.card" v-motion-slide-up-fast>
     <QCardSection :class="$style.section">
       <div :class="$style.header">
         <h2 :class="$style.title">Безопасность</h2>
@@ -44,30 +44,36 @@ const handleSubmit = () => {
       </div>
 
       <div :class="$style.form">
-        <QInput
-          v-model="oldPassword"
-          outlined
-          type="password"
-          label="Текущий пароль"
-          color="secondary"
-        />
-        <QInput
-          ref="newPassInputRef"
-          v-model="newPassword"
-          outlined
-          type="password"
-          label="Новый пароль"
-          color="secondary"
-          :rules="passwordRules"
-          @blur="resetValidation(newPassInputRef)"
-          @focus="runInputValidate(newPassInputRef)"
-        />
+        <div :class="$style.inputGroup">
+          <label :class="$style.label">Текущий пароль</label>
+          <QInput
+            v-model="oldPassword"
+            outlined
+            dense
+            type="password"
+            label="Текущий пароль"
+            color="secondary"
+          />
+        </div>
+        <div :class="$style.inputGroup">
+          <label :class="$style.label">Новый пароль</label>
+          <QInput
+            ref="newPassInputRef"
+            v-model="newPassword"
+            outlined
+            dense
+            type="password"
+            label="Новый пароль"
+            color="secondary"
+            :rules="passwordRules"
+            @blur="resetValidation(newPassInputRef)"
+            @focus="runInputValidate(newPassInputRef)"
+          />
+        </div>
       </div>
     </QCardSection>
 
-    <QSeparator />
-
-    <QCardActions :class="$style.actions" align="right">
+    <QCardActions :class="$style.cardFooter" align="right">
       <QBtn
         :disable="!isValid"
         :loading="isLoadingChangePass"
@@ -84,10 +90,10 @@ const handleSubmit = () => {
 
 <style lang="scss" module>
 /* Стили абсолютно идентичны UserProfileWidget (можно вынести в общий mixin потом) */
-.widgetCard {
+.card {
   border-radius: 8px;
-  border-color: #eaeaea;
-  background-color: #ffffff;
+  border-color: var(--border-color);
+  background-color: var(--bg-surface);
 }
 .section {
   padding: 24px;
@@ -103,7 +109,7 @@ const handleSubmit = () => {
 }
 .subtitle {
   font-size: 14px;
-  color: #666;
+  color: var(--text-muted);
   margin: 0;
 }
 .form {
@@ -112,8 +118,20 @@ const handleSubmit = () => {
   gap: 16px;
   max-width: 400px;
 }
-.actions {
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 400px;
+}
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.cardFooter {
   padding: 16px 24px;
-  background-color: #fcfcfc;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-page);
 }
 </style>

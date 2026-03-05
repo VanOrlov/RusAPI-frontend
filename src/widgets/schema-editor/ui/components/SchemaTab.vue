@@ -69,7 +69,7 @@ watch(
 <template>
   <div>
     <div class="flex justify-between items-center q-mb-md">
-      <p class="text-grey-7 q-ma-none">
+      <p :class="$style.subTitle">
         Опишите поля, из которых будет состоять каждый объект в этом эндпоинте.
       </p>
     </div>
@@ -77,13 +77,14 @@ watch(
     <div :class="$style.fieldsList">
       <div v-for="(field, index) in localSchema" :key="index" :class="$style.fieldRow">
         <div :class="$style.inputWrapper">
-          <label class="text-caption text-weight-bold text-grey-8">Имя поля</label>
+          <label :class="$style.label">Имя поля</label>
           <QInput
             v-model="field.name"
             outlined
             dense
             placeholder="Например: id, email, price"
             class="custom-input"
+            color="secondary"
             :disable="index === 0"
             :rules="[(val) => /^[a-zA-Z0-9_]+$/.test(val) || 'Только a-z, 0-9, _']"
             hide-bottom-space
@@ -91,7 +92,7 @@ watch(
         </div>
 
         <div :class="$style.inputWrapper">
-          <label class="text-caption text-weight-bold text-grey-8">Тип данных</label>
+          <label :class="$style.label">Тип данных</label>
           <QSelect
             v-model="field.type"
             :options="filteredOptions"
@@ -103,6 +104,7 @@ watch(
             hide-selected
             fill-input
             input-debounce="0"
+            color="secondary"
             @filter="filterFn"
             :disable="index === 0"
             placeholder="Выберите или начните вводить..."
@@ -170,20 +172,29 @@ watch(
   gap: 16px;
 }
 
+.subTitle {
+  color: var(--text-muted);
+  margin: 0;
+}
+
 .fieldRow {
   display: flex;
   flex-direction: column; /* На мобилке элементы друг под другом */
   align-items: flex-start;
   gap: 12px;
-  background: #fafafa;
+  background: var(--bg-surface);
   padding: 16px;
   border-radius: 8px;
-  border: 1px solid #f0f0f0;
+  border: 1px solid var(--border-color);
 
   @media (min-width: 768px) {
     flex-direction: row; /* На десктопе в ряд */
     gap: 16px;
   }
+}
+
+.label {
+  color: var(--text-muted);
 }
 
 .inputWrapper {

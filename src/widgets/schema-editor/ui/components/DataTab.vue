@@ -62,7 +62,7 @@ const recordsCountRules: Rule[] = [
           style="height: 40px"
         />
       </div>
-      <p class="text-caption text-grey-6 q-ma-none">Внимание: Текущие данные будут перезаписаны!</p>
+      <p :class="$style.dataWarning">Внимание: Текущие данные будут перезаписаны!</p>
     </div>
 
     <div :class="$style.jsonViewer">
@@ -83,11 +83,11 @@ const recordsCountRules: Rule[] = [
   flex-direction: column; /* Мобилка: Текст-предупреждение падает вниз */
   align-items: flex-start;
   gap: 12px;
-  background: #f9f9f9;
+  background: var(--bg-surface);
   padding: 16px;
   border-radius: 8px;
   margin-bottom: 16px;
-  border: 1px solid #eaeaea;
+  border: 1px solid var(--border-color);
 
   @media (min-width: 768px) {
     flex-direction: row; /* Десктоп */
@@ -95,6 +95,9 @@ const recordsCountRules: Rule[] = [
     align-items: center;
     gap: 0;
   }
+}
+.dataWarning {
+  color: var(--text-muted);
 }
 
 .generateControls {

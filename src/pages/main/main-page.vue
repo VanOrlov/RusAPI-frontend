@@ -24,28 +24,71 @@ const steps = [
 
 <template>
   <div :class="$style.landing">
-    
     <div :class="$style.bgWrapper">
-      <div :class="$style.glow" style="top: -20%; left: -10%; background: radial-gradient(circle, rgba(38, 166, 154, 0.15) 0%, transparent 70%);"></div>
-      <div :class="$style.glow" style="bottom: 10%; right: -10%; background: radial-gradient(circle, rgba(38, 166, 154, 0.1) 0%, transparent 70%);"></div>
+      <div
+        :class="$style.glow"
+        v-motion
+        :initial="{
+          background: 'radial-gradient(circle, rgba(38, 166, 154, 0.25) 0%, transparent 30%)',
+          x: 200,
+          y: 200
+        }"
+        :visible-once="{
+          background: 'radial-gradient(circle, rgba(38, 166, 154, 0.25) 0%, transparent 70%)',
+          x: 0,
+          y: 0,
+          transition: { duration: 1000 },
+        }"
+      ></div>
+      <div
+        :class="$style.glow"
+        style="
+          bottom: 10%;
+          right: -10%;
+          background: radial-gradient(circle, rgba(38, 166, 154, 0.1) 0%, transparent 70%);
+        "
+        v-motion
+      ></div>
     </div>
 
     <section :class="$style.hero">
       <div :class="$style.heroText">
-        <div :class="$style.badge" v-motion :initial="{ opacity: 0, y: 20 }" :enter="{ opacity: 1, y: 0 }">
+        <div
+          :class="$style.badge"
+          v-motion
+          :initial="{ opacity: 0, y: 30 }"
+          :enter="{ opacity: 1, y: 0 }"
+        >
           🚀 RusAPI Beta 0.1
         </div>
-        <h1 :class="$style.title" v-motion :initial="{ opacity: 0, y: 30 }" :enter="{ opacity: 1, y: 0, transition: { delay: 100 } }">
-          Ваш фронтенд больше <br/>
+        <h1
+          :class="$style.title"
+          v-motion
+          :initial="{ opacity: 0, y: 30 }"
+          :enter="{ opacity: 1, y: 0, transition: { delay: 300 } }"
+        >
+          Ваш фронтенд больше <br />
           не ждет <span :class="$style.highlight">бэкенд</span>
         </h1>
-        <p :class="$style.subtitle" v-motion :initial="{ opacity: 0, y: 30 }" :enter="{ opacity: 1, y: 0, transition: { delay: 200 } }">
-          Генерируйте реалистичные мок-данные по кастомным схемам за пару кликов.
-          Идеально для пет-проектов, прототипирования и тестирования интерфейсов.
+        <p
+          :class="$style.subtitle"
+          v-motion
+          :initial="{ opacity: 0, y: 30 }"
+          :enter="{ opacity: 1, y: 0, transition: { delay: 500 } }"
+        >
+          Генерируйте реалистичные мок-данные по кастомным схемам за пару кликов. Идеально для
+          пет-проектов, прототипирования и тестирования интерфейсов.
         </p>
-        <div :class="$style.actions" v-motion :initial="{ opacity: 0, y: 30 }" :enter="{ opacity: 1, y: 0, transition: { delay: 300 } }">
-          <button :class="$style.btnPrimary" @click="router.push('/signup')">Создать API бесплатно</button>
-          <button :class="$style.btnSecondary" @click="router.push('/docs')">Читать документацию</button>
+        <div
+          :class="$style.actions"
+          v-motion
+          :initial="{ opacity: 0, y: 30 }"
+          :enter="{ opacity: 1, y: 0, transition: { delay: 700 } }"
+        >
+          <button :class="$style.btnPrimary" @click="router.push('/signup')">
+            Создать API бесплатно
+          </button>
+          <!--button :class="$style.btnSecondary" @click="router.push('/docs')">Читать документацию</button-->
         </div>
       </div>
     </section>
@@ -53,13 +96,13 @@ const steps = [
     <section :class="$style.stepsSection">
       <h2 :class="$style.sectionTitle" v-motion-slide-visible-once-bottom>Всё просто как 1-2-3</h2>
       <div :class="$style.stepsGrid">
-        <div 
-          v-for="(step, i) in steps" 
-          :key="step.number" 
+        <div
+          v-for="(step, i) in steps"
+          :key="step.number"
           :class="$style.stepCard"
           v-motion
-          :initial="{ opacity: 0, y: 50 }"
-          :visible-once="{ opacity: 1, y: 0, transition: { delay: i * 150 } }"
+          :initial="{ opacity: 0, y: 150, x: 150 }"
+          :visible-once="{ opacity: 1, y: 0, x: 0, transition: { delay: 250 * i, duration: 200 } }"
         >
           <div :class="$style.stepNumber">{{ step.number }}</div>
           <h3 :class="$style.stepTitle">{{ step.title }}</h3>
@@ -71,15 +114,36 @@ const steps = [
     <section :class="$style.showcaseSection">
       <div :class="$style.showcaseContainer" v-motion-slide-visible-once-bottom>
         <div :class="$style.showcaseText">
-          <h2>Настоящий JSON,<br/>готовый к работе</h2>
-          <p>Вам не нужно хардкодить данные прямо в компонентах. Обращайтесь к RusAPI так же, как вы бы обращались к реальному серверу.</p>
+          <h2>Настоящий JSON,<br />готовый к работе</h2>
+          <p>
+            Вам не нужно хардкодить данные прямо в компонентах. Обращайтесь к RusAPI так же, как вы
+            бы обращались к реальному серверу.
+          </p>
           <ul :class="$style.checkList">
-            <li><QIcon name="check_circle" color="secondary" /> Поддержка CORS</li>
-            <li><QIcon name="check_circle" color="secondary" /> Работает из браузера и Node.js</li>
-            <li><QIcon name="check_circle" color="secondary" /> Мгновенный ответ сервера</li>
+            <li
+              v-motion
+              :initial="{ opacity: 0, x: 150 }"
+              :visible-once="{ opacity: 1, x: 0, transition: { delay: 50, duration: 1000 } }"
+            >
+              <QIcon name="check_circle" color="secondary" /> Поддержка CORS
+            </li>
+            <li
+              v-motion
+              :initial="{ opacity: 0, x: 150 }"
+              :visible-once="{ opacity: 1, x: 0, transition: { delay: 150, duration: 1000 } }"
+            >
+              <QIcon name="check_circle" color="secondary" /> Работает из браузера и Node.js
+            </li>
+            <li
+              v-motion
+              :initial="{ opacity: 0, x: 150 }"
+              :visible-once="{ opacity: 1, x: 0, transition: { delay: 250, duration: 1000 } }"
+            >
+              <QIcon name="check_circle" color="secondary" /> Мгновенный ответ сервера
+            </li>
           </ul>
         </div>
-        
+
         <div :class="$style.codeWindow">
           <div :class="$style.codeHeader">
             <span :class="$style.dot" style="background: #ff5f56"></span>
@@ -87,7 +151,9 @@ const steps = [
             <span :class="$style.dot" style="background: #27c93f"></span>
             <span :class="$style.fileName">app.ts</span>
           </div>
-          <pre :class="$style.codeBody"><code><span style="color: #c678dd">const</span> fetchUsers = <span style="color: #c678dd">async</span> () => {
+          <pre
+            :class="$style.codeBody"
+          ><code><span style="color: #c678dd">const</span> fetchUsers = <span style="color: #c678dd">async</span> () => {
   <span style="color: #c678dd">const</span> res = <span style="color: #c678dd">await</span> <span style="color: #61afef">fetch</span>(<span style="color: #98c379">'https://rusapi.com/mock/Vx9_k2m/users'</span>);
   <span style="color: #c678dd">const</span> data = <span style="color: #c678dd">await</span> res.<span style="color: #61afef">json</span>();
   
@@ -105,9 +171,11 @@ const steps = [
 
     <section :class="$style.ctaSection" v-motion-slide-visible-once-bottom>
       <div :class="$style.ctaBox">
-        <h2>Хватит хардкодить. Пора разрабатывать.</h2>
-        <p>Зарегистрируйтесь сейчас и создайте свой первый мок-эндпоинт менее чем за минуту.</p>
-        <button :class="$style.btnPrimary" @click="router.push('/signup')">Перейти к регистрации</button>
+        <h2>Хватит хардкодить - Пора разрабатывать.</h2>
+        <p>Зарегистрируйтесь сейчас и создайте свой первый <br/> мок-эндпоинт менее чем за минуту.</p>
+        <button :class="$style.btnPrimary" @click="router.push('/signup')">
+          Перейти к регистрации
+        </button>
       </div>
     </section>
   </div>
@@ -125,14 +193,12 @@ $bg-gray: #f8fafc;
   width: 100%;
   font-family: 'Inter', system-ui, sans-serif;
   color: $text-main;
-  position: relative; /* Убрано overflow-x: hidden */
 }
 
-/* Обертка для фоновых эффектов */
 .bgWrapper {
   position: absolute;
   inset: 0;
-  overflow: hidden; /* Скрывает горизонтальный скролл только для фона */
+  overflow: hidden;
   z-index: 0;
   pointer-events: none;
 }
@@ -180,12 +246,13 @@ $bg-gray: #f8fafc;
   line-height: 1.1;
   margin-bottom: 24px;
   letter-spacing: -0.02em;
+  color: var(--text-main);
 }
 
 .highlight {
   color: $primary;
   position: relative;
-  
+
   &::after {
     content: '';
     position: absolute;
@@ -200,7 +267,7 @@ $bg-gray: #f8fafc;
 
 .subtitle {
   font-size: clamp(1rem, 2vw, 1.25rem);
-  color: $text-muted;
+  color: var(--text-muted);
   max-width: 600px;
   line-height: 1.6;
   margin-bottom: 40px;
@@ -223,7 +290,7 @@ $bg-gray: #f8fafc;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
-  
+
   &:hover {
     background: color-mix(in srgb, $primary 90%, black);
     transform: translateY(-2px);
@@ -241,7 +308,7 @@ $bg-gray: #f8fafc;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
-  
+
   &:hover {
     background: $bg-gray;
     border-color: #cbd5e1;
@@ -251,9 +318,12 @@ $bg-gray: #f8fafc;
 /* --- STEPS --- */
 .stepsSection {
   padding: 80px 20px;
-  background: $bg-gray;
   position: relative;
   z-index: 1;
+
+  @media (max-width: 768px) {
+    padding: 50px 20px;
+  }
 }
 
 .sectionTitle {
@@ -261,6 +331,7 @@ $bg-gray: #f8fafc;
   font-size: clamp(2rem, 3vw, 2.5rem);
   font-weight: 800;
   margin-bottom: 60px;
+  color: var(--text-main);
 }
 
 .stepsGrid {
@@ -272,17 +343,17 @@ $bg-gray: #f8fafc;
 }
 
 .stepCard {
-  background: white;
+  background: var(--bg-surface);
   padding: 40px 30px;
   border-radius: 16px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  border: 1px solid #f1f5f9;
+  border: 1px solid var(--border-color);
   position: relative;
   overflow: hidden;
-  transition: transform 0.3s ease;
+  transition: all 0.2s ease;
 
   &:hover {
-    transform: translateY(-5px);
+    background: var(--bg-surface-elevated);
   }
 }
 
@@ -302,10 +373,11 @@ $bg-gray: #f8fafc;
   margin-bottom: 12px;
   position: relative;
   z-index: 2;
+  color: var(--text-main);
 }
 
 .stepDesc {
-  color: $text-muted;
+  color: var(--text-muted);
   line-height: 1.6;
   position: relative;
   z-index: 2;
@@ -314,7 +386,9 @@ $bg-gray: #f8fafc;
 /* --- SHOWCASE --- */
 .showcaseSection {
   padding: 100px 20px;
-  background: white;
+  @media (max-width: 768px) {
+    padding: 50px 20px;
+  }
 }
 
 .showcaseContainer {
@@ -323,7 +397,7 @@ $bg-gray: #f8fafc;
   display: flex;
   align-items: center;
   gap: 60px;
-  
+
   @media (max-width: 900px) {
     flex-direction: column;
   }
@@ -331,26 +405,28 @@ $bg-gray: #f8fafc;
 
 .showcaseText {
   flex: 1;
-  
+
   h2 {
     font-size: clamp(2rem, 3vw, 2.5rem);
     font-weight: 800;
     margin-bottom: 24px;
     line-height: 1.2;
+    color: var(--text-main);
   }
-  
+
   p {
     font-size: 1.125rem;
-    color: $text-muted;
+    color: var(--text-muted);
     line-height: 1.7;
     margin-bottom: 32px;
+    color: var(--text-muted);
   }
 }
 
 .checkList {
   list-style: none;
   padding: 0;
-  
+
   li {
     display: flex;
     align-items: center;
@@ -358,7 +434,7 @@ $bg-gray: #f8fafc;
     font-size: 1rem;
     font-weight: 500;
     margin-bottom: 16px;
-    color: $text-main;
+    color: var(--text-secondary);
   }
 }
 
@@ -417,16 +493,16 @@ $bg-gray: #f8fafc;
   text-align: center;
   max-width: 800px;
   width: 100%;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  
+  box-shadow: 0 0px 40px var(--card-shadow);
+
   h2 {
     font-size: clamp(1.75rem, 3vw, 2.5rem);
     font-weight: 800;
     margin-bottom: 16px;
   }
-  
+
   p {
-    color: #94a3b8;
+    color: var(--text-muted);
     font-size: 1.125rem;
     margin-bottom: 32px;
   }

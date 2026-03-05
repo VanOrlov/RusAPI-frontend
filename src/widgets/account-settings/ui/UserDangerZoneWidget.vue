@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <QCard flat bordered :class="[$style.widgetCard, $style.dangerCard]">
+  <QCard flat bordered :class="[$style.card, $style.dangerCard]" v-motion-slide-up-fast>
     <QCardSection :class="$style.section">
       <div :class="$style.header">
         <h2 :class="[$style.title, $style.textDanger]">Удаление аккаунта</h2>
@@ -20,9 +20,9 @@
 </template>
 
 <style lang="scss" module>
-.widgetCard {
+.card {
   border-radius: 8px;
-  background-color: #ffffff;
+  background-color: var(--bg-surface);
 }
 .section {
   padding: 24px;
@@ -38,7 +38,7 @@
 }
 .subtitle {
   font-size: 14px;
-  color: #666;
+  color: var(--text-muted);
   margin: 0;
 }
 .actions {
@@ -47,13 +47,13 @@
 
 /* Специфичные стили опасной зоны */
 .dangerCard {
-  border-color: #ffcdd2;
+  border-color: var(--danger-border);
 }
 .textDanger {
-  color: #d32f2f;
+  color: var(--danger-text);
 }
 .dangerActions {
-  background-color: #fffafb;
-  border-top: 1px solid #ffcdd2;
+  background-color: var(--bg-page);
+  border-top: 1px solid var(--danger-border)
 }
 </style>

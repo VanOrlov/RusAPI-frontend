@@ -18,21 +18,16 @@ const formatDate = (isoString: string) => {
 </script>
 
 <template>
-  <QCard
-    flat
-    bordered
-    :class="$style.projectCard"
-    @click="router.push(`/projects/${project.nanoId}`)"
-  >
+  <QCard flat bordered :class="$style.card" @click="router.push(`/projects/${project.nanoId}`)">
     <QCardSection :class="$style.cardBody">
       <div :class="$style.cardHeader">
-        <h3 :class="$style.projectName">{{ project.name }}</h3>
-        <QBadge color="grey-2" text-color="grey-8" :class="$style.nanoIdBadge">
+        <h3 :class="$style.projectName" :title="project.name">{{ project.name }}</h3>
+        <QBadge :class="$style.nanoIdBadge">
           {{ project.nanoId }}
         </QBadge>
       </div>
 
-      <p :class="$style.projectDesc">
+      <p :class="$style.projectDesc" :title="project.description">
         {{ project.description || 'Нет описания' }}
       </p>
 
@@ -48,13 +43,13 @@ const formatDate = (isoString: string) => {
 </template>
 
 <style lang="scss" module>
-.projectCard {
+.card {
   border-radius: 8px;
-  border-color: #eaeaea;
-  background-color: #ffffff;
+  border-color: var(--border-color);
+  background-color: var(--bg-surface);
   transition: all 0.2s ease;
   cursor: pointer;
-  height: 100%; /* Чтобы все карточки в сетке были одной высоты */
+  height: 100%;
 
   &:hover {
     border-color: #26a69a;
@@ -82,8 +77,11 @@ const formatDate = (isoString: string) => {
   font-size: 18px;
   font-weight: 600;
   margin: 0;
-  color: #111;
+  color: var(--text-main);
   line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .nanoIdBadge {
@@ -94,11 +92,16 @@ const formatDate = (isoString: string) => {
 }
 
 .projectDesc {
+  display: -webkit-box;
   font-size: 14px;
-  color: #666;
+  color: var(--text-muted);
   margin: 0 0 24px 0;
   line-height: 1.5;
   flex-grow: 1;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .cardFooter {
@@ -115,10 +118,10 @@ const formatDate = (isoString: string) => {
   align-items: center;
   gap: 6px;
   font-size: 13px;
-  color: #888;
+  color: var(--text-muted);
 }
 
 .metaIcon {
-  color: #bbb;
+  color: var(--text-muted);
 }
 </style>

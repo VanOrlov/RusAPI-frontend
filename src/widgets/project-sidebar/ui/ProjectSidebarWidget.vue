@@ -27,7 +27,6 @@ const router = useRouter();
         no-caps
         icon="arrow_back"
         label="Все проекты"
-        color="grey-7"
         :class="$style.backBtn"
         @click="router.push('/projects')"
       />
@@ -43,7 +42,7 @@ const router = useRouter();
     <QSeparator class="q-my-md" />
 
     <div class="flex justify-between items-center q-mb-sm">
-      <p class="text-grey-6 text-body2 q-ma-none">Эндпоинты</p>
+      <p class="text-body2 q-ma-none">Эндпоинты</p>
       <QBtn size="10px" color="secondary" icon="add" @click="emit('create')" />
     </div>
 
@@ -82,20 +81,19 @@ const router = useRouter();
 <style lang="scss" module>
 .sidebar {
   width: 100%;
-  background-color: #fafafa;
-  border-bottom: 1px solid #eaeaea;
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
   padding: 16px;
   display: flex;
   flex-direction: column;
 
   @media (min-width: 768px) {
     width: 280px;
-    border-right: 1px solid #eaeaea;
-    border-bottom: none;
+    border: 1px solid var(--border-color);
     padding: 24px;
-    height: calc(100vh - 60px);
+    height: fit-content;
     position: sticky;
-    top: 0;
+    top: 73px;
   }
 }
 
@@ -108,10 +106,7 @@ const router = useRouter();
   font-size: 13px;
   margin-left: -8px; 
   transition: color 0.2s;
-
-  &:hover {
-    color: #111 !important;
-  }
+  color: var(--text-muted);
 }
 .listModified {
   display: flex;
@@ -137,20 +132,20 @@ const router = useRouter();
   font-size: 18px;
   font-weight: 600;
   margin: 0 0 4px 0;
-  color: #111;
+  color: var(--text-main);
 }
 
 .nanoId {
   font-size: 12px;
-  color: #666;
+  color: var(--text-muted);
   display: flex;
   align-items: center;
 
   span {
     font-family: monospace;
     margin-left: 5px;
-    color: #666;
-    background: #eee;
+    color: var(--text-muted);
+    background: var(--bg-surface-elevated);
     padding: 2px 6px;
     border-radius: 4px;
     width: fit-content;
@@ -160,8 +155,8 @@ const router = useRouter();
       color 0.2s;
 
     &:hover {
-      background: #e0e0e0;
-      color: #111;
+      background: var(--hover-bg);
+      color: var(--text-main);
     }
   }
 }
@@ -176,12 +171,12 @@ const router = useRouter();
   }
 
   &:hover {
-    background-color: #f0f8f7;
+    background-color: var(--hover-bg);
   }
 }
 
 .activeItem {
-  background-color: #e0f2f1;
-  color: #26a69a;
+  background-color: var(--active-bg);
+  color: var(--text-secondary);
 }
 </style>

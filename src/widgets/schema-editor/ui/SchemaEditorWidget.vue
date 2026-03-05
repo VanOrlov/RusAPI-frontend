@@ -64,11 +64,11 @@ const activeTab = ref('schema');
 
 <style lang="scss" module>
 .editor {
-  background: #ffffff;
-  border: 1px solid #eaeaea;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 32px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 2px var(--card-shadow);
 
   @media (max-width: 768px) {
     padding: 16px;
@@ -86,10 +86,10 @@ const activeTab = ref('schema');
   font-size: 20px;
   font-weight: 600;
   margin: 0;
-  color: #111;
+  color: var(--text-main);
 }
 .textSecondary {
-  color: #26a69a;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
   &:hover {
@@ -102,7 +102,7 @@ const activeTab = ref('schema');
   align-items: center;
   gap: 6px;
   font-size: 14px;
-  color: #26a69a;
+  color: var(--text-secondary);
   text-decoration: none;
   font-weight: 500;
   padding: 6px 12px;

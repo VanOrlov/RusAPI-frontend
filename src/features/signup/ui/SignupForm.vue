@@ -17,8 +17,10 @@ const onSubmit = async () => {
 
 <template>
   <div :class="$style.signupContainer">
-    <div :class="$style.formTitle">Регистрация</div>
-    <div :class="$style.formContainer">
+    <div :class="$style.formTitle" v-motion-slide-up-fast>
+      Регистрация
+    </div>
+    <div :class="$style.formContainer" v-motion-slide-up>
       <QForm>
         <QInput
           v-model="signupStore.signupData.name"
@@ -56,7 +58,7 @@ const onSubmit = async () => {
         />
       </QForm>
     </div>
-    <div :class="$style.formFooter">
+    <div :class="$style.formFooter" v-motion-slide-up-late>
       Есть аккаунт? <router-link to="/login" :class="$style.formFooterLink">Войти</router-link>
     </div>
   </div>
@@ -67,8 +69,8 @@ const onSubmit = async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%; /* Позволяем контейнеру сжиматься */
-  max-width: 468px; /* Но не даем растягиваться больше нужного */
+  width: 100%;
+  max-width: 468px;
 }
 
 .formTitle {
@@ -77,23 +79,23 @@ const onSubmit = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px; /* На мобилках шрифт чуть меньше */
+  font-size: 24px;
   font-weight: 600;
 
   @media (min-width: 768px) {
-    font-size: 30px; /* На десктопе возвращаем большой размер */
+    font-size: 30px;
   }
 }
 
 .formContainer {
-  width: 100%; /* Убрали жесткие 468px, теперь ширина 100% от родителя */
+  width: 100%;
   padding: 24px;
   border-radius: 10px;
   box-shadow: 0 0 3px 0px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff; /* Добавил белый фон на всякий случай, если фон страницы серый */
+  background-color: var(--bg-surface);
 
   @media (max-width: 400px) {
-    padding: 16px; /* На очень узких экранах (iPhone SE) уменьшаем внутренние отступы */
+    padding: 16px;
   }
 }
 
@@ -112,7 +114,7 @@ const onSubmit = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px; /* Чуть уменьшил для адаптивности */
+  font-size: 14px;
 
   @media (min-width: 768px) {
     font-size: 16px;
@@ -121,7 +123,7 @@ const onSubmit = async () => {
 
 .formFooterLink {
   margin-left: 5px;
-  color: #26a69a; /* Поправил код цвета на стандартный Quasar Secondary, если я правильно помню твой конфиг */
+  color: var(--text-secondary);
   text-decoration: none;
   font-weight: 500;
 

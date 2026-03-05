@@ -18,8 +18,8 @@ import { TheHeader } from 'src/widgets/header/ui';
 <style lang="scss" module>
 .layout {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  background-color: #ffffff;
-  background-image: radial-gradient(rgba(38, 166, 154, 0.1) 2px, #ffffff 2px);
+  background-color: var(--bg-page);
+  background-image: radial-gradient(rgba(38, 166, 154, 0.1) 2px, var(--bg-page) 2px);
   background-size: 40px 40px;
 }
 </style>

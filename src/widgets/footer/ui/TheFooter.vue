@@ -29,9 +29,9 @@ const goTo = (path: string) => {
 
 <style lang="scss" module>
 .footer {
-  background-color: white;
-  color: #666;
-  border-top: 1px solid #f0f0f0;
+  background-color: var(--bg-page);
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-color)
 }
 .footerContainer {
   display: flex;
@@ -48,20 +48,20 @@ const goTo = (path: string) => {
 .footerLogo {
   font-size: 18px;
   font-weight: 700;
-  color: #111;
+  color: var(--text-muted);
   letter-spacing: -0.5px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .copyright {
   font-size: 14px;
-  color: #888;
+  color: var(--text-muted);
 }
 .footerRight {
   display: flex;
   gap: 24px;
 }
 .footerLink {
-  color: #666;
+  color: var(--text-muted);
   text-decoration: none;
   font-size: 14px;
   transition: color 0.2s ease;

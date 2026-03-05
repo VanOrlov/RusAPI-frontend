@@ -99,6 +99,7 @@ export default defineConfig(() => {
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
     framework: {
       config: {
+        dark: 'auto',
         notify: {
           position: 'bottom',
           timeout: 2000,

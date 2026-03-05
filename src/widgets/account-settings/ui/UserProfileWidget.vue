@@ -3,7 +3,7 @@ import { QInput } from 'quasar';
 import { useUserQuery } from 'src/entities/user/model/user.query';
 import { useChangeProfile } from 'src/features/change-profile/model/use-change-profile';
 import { nameRules } from 'src/features/signup/model/rules';
-import { resetValidation, runInputValidate } from 'src/shared/utils';
+import { isRulesValid, resetValidation, runInputValidate } from 'src/shared/utils';
 import { computed, ref, watch } from 'vue';
 const { data, isLoading } = useUserQuery(() => true);
 const { mutate, isLoading: isChangeProfileLoading } = useChangeProfile();
@@ -14,6 +14,7 @@ const nameInput = ref<InstanceType<typeof QInput> | null>(null);
 
 const isDirty = computed(() => {
   if (isLoading.value) return false;
+  if (!isRulesValid(nameRules, name.value)) return false
   return name.value.trim() !== data.value?.name;
 });
 
@@ -42,7 +43,7 @@ watch(
 </script>
 
 <template>
-  <QCard flat :class="$style.card">
+  <QCard :class="$style.card" v-motion-slide-up-fast>
     <QCardSection :class="$style.cardBody">
       <div :class="$style.header">
         <h2 :class="$style.title">Профиль</h2>
@@ -53,7 +54,7 @@ watch(
 
       <div :class="$style.inputGroup">
         <label :class="$style.label">Ваше имя</label>
-        <QSkeleton v-if="isLoading" type="QInput" />
+        <QSkeleton v-if="isLoading" type="QInput" height="40px" />
         <QInput
           v-else
           ref="nameInput"
@@ -63,6 +64,7 @@ watch(
           color="secondary"
           class="custom-input"
           :rules="nameRules"
+          placeholder="Ваше имя"
           @blur="resetValidation(nameInput)"
           @focus="runInputValidate(nameInput)"
         />
@@ -70,16 +72,8 @@ watch(
 
       <div :class="$style.inputGroup">
         <label :class="$style.label">Email</label>
-        <QSkeleton v-if="isLoading" type="QInput" />
-        <QInput
-          v-else
-          v-model="email"
-          outlined
-          dense
-          disable
-          readonly
-          class="custom-input"
-        />
+        <QSkeleton v-if="isLoading" type="QInput" height="40px" />
+        <QInput v-else v-model="email" outlined dense disable readonly class="custom-input" />
         <span :class="$style.hint"
           >Мы используем этот email для важных уведомлений. Для смены адреса обратитесь в
           поддержку.</span
@@ -104,19 +98,17 @@ watch(
 
 <style lang="scss" module>
 .card {
-  background: #ffffff;
-  border: 1px solid #eaeaea;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03); /* Очень легкая тень */
+  box-shadow: 0 1px 2px var(--card-shadow);
 }
 
 .cardBody {
   padding: 32px;
   display: flex;
   flex-direction: column;
-  gap: 28px; /* Ровные отступы между блоками */
+  gap: 20px;
 }
 
 .header {
@@ -132,7 +124,7 @@ watch(
 
 .subtitle {
   font-size: 14px;
-  color: #666;
+  color: var(--text-muted);
   margin: 0;
 }
 
@@ -157,7 +149,7 @@ watch(
 .label {
   font-size: 14px;
   font-weight: 600;
-  color: #333;
+  color: var(--text-muted);
 }
 
 .hint {
@@ -168,8 +160,8 @@ watch(
 }
 
 .cardFooter {
-  background-color: #fafafa;
-  border-top: 1px solid #eaeaea;
+  background-color: var(--bg-page);
+  border-top: 1px solid var(--border-color);
   padding: 16px 32px;
   display: flex;
   justify-content: space-between;
@@ -178,7 +170,7 @@ watch(
 
 .footerNote {
   font-size: 14px;
-  color: #666;
+  color: var(--text-muted);
 }
 
 /* Адаптив для телефона */

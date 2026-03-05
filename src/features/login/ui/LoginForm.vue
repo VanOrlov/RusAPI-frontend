@@ -16,8 +16,8 @@ const onSubmit = async () => {
 
 <template>
   <div :class="$style.loginContainer">
-    <div :class="$style.formTitle">Вход</div>
-    <div :class="$style.formContainer">
+    <div :class="$style.formTitle" v-motion-slide-up-fast>Вход</div>
+    <div :class="$style.formContainer" v-motion-slide-up>
       <QForm>
         <QInput v-model="loginStore.loginData.email" color="secondary" label="Email">
           <template v-slot:prepend>
@@ -45,7 +45,7 @@ const onSubmit = async () => {
         />
       </QForm>
     </div>
-    <div :class="$style.formFooter">
+    <div :class="$style.formFooter" v-motion-slide-up-late>
       Нет аккаунта?
       <router-link to="/signup" :class="$style.formFooterLink">Зарегистрироваться</router-link>
     </div>
@@ -79,8 +79,8 @@ const onSubmit = async () => {
   width: 100%;
   padding: 24px;
   border-radius: 10px;
-  box-shadow: 0 0 3px 0px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
+  box-shadow: 0 0 3px 0px var(--card-shadow);
+  background-color: var(--bg-surface);
 
   @media (max-width: 400px) {
     padding: 16px; 
@@ -103,7 +103,7 @@ const onSubmit = async () => {
 
 .formFooterLink {
   margin-left: 5px;
-  color: #26a69a;
+  color: var(--text-secondary);
   text-decoration: none;
   font-weight: 500;
 

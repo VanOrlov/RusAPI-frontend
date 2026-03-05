@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { clearToken, setToken } from './methods/token';
 export const API = axios.create({
-  baseURL: process.env.API_URL!,
+  baseURL: 'http://192.168.0.106:3000/api', //process.env.API_URL!,
   withCredentials: true,
 });
 

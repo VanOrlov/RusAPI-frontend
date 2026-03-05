@@ -5,10 +5,10 @@ import { useDeleteSession } from 'src/features/delete-session/model/use-delete-s
 import { useLogout } from 'src/features/logout/model/use-logout';
 import { ref } from 'vue';
 
-const $q = useQuasar()
+const $q = useQuasar();
 const { data, isLoading, error } = useSessionsQuery();
 const { mutate, isLoading: isLoadingDeleteSession } = useDeleteSession();
-const { logout } = useLogout()
+const { logout } = useLogout();
 
 const deletingSessionId = ref<string | null>(null);
 
@@ -26,7 +26,6 @@ const formatDate = (dateString: string) => {
 const terminateSession = (sessionId: string, isCurrentSession: boolean | undefined) => {
   deletingSessionId.value = sessionId;
   if (isCurrentSession) {
-    console.log($q)
     $q.dialog({
       title: 'Внимание',
       message:
@@ -42,16 +41,18 @@ const terminateSession = (sessionId: string, isCurrentSession: boolean | undefin
         flat: true,
       },
       persistent: true,
-    }).onOk(() => {
-      try {
-        mutate(sessionId);
-        void logout()
-      } catch {
-        void 0;
-      }
-    }).onCancel(() => {
-      deletingSessionId.value = null; 
-    });
+    })
+      .onOk(() => {
+        try {
+          mutate(sessionId);
+          void logout();
+        } catch {
+          void 0;
+        }
+      })
+      .onCancel(() => {
+        deletingSessionId.value = null;
+      });
   } else {
     try {
       mutate(sessionId);
@@ -63,7 +64,7 @@ const terminateSession = (sessionId: string, isCurrentSession: boolean | undefin
 </script>
 
 <template>
-  <QCard flat bordered :class="$style.widgetCard">
+  <QCard flat bordered :class="$style.card" v-motion-slide-up-fast>
     <QCardSection :class="$style.section">
       <div :class="$style.header">
         <h2 :class="$style.title">Активные сеансы</h2>
@@ -73,7 +74,7 @@ const terminateSession = (sessionId: string, isCurrentSession: boolean | undefin
       </div>
 
       <div v-if="isLoading" class="text-grey-6 text-body2">
-        <QSkeleton type="QToolbar"/>
+        <QSkeleton type="QToolbar" />
       </div>
 
       <div v-else-if="error && data" class="text-negative text-body2">
@@ -85,7 +86,13 @@ const terminateSession = (sessionId: string, isCurrentSession: boolean | undefin
           <div :class="$style.sessionInfo">
             <div :class="$style.sessionInfoTitle">
               <span :class="$style.device">{{ session.device }}</span>
-              <QBadge v-if="session.isCurrent" color="positive" outline label="Текущий сеанс" :class="$style.sessionCurrent" />
+              <QBadge
+                v-if="session.isCurrent"
+                color="positive"
+                outline
+                label="Текущий сеанс"
+                :class="$style.sessionCurrent"
+              />
             </div>
             <span :class="$style.ip">
               IP: {{ session.ip === '::1' ? '127.0.0.1 (Localhost)' : session.ip }}
@@ -111,10 +118,10 @@ const terminateSession = (sessionId: string, isCurrentSession: boolean | undefin
 </template>
 
 <style lang="scss" module>
-.widgetCard {
+.card {
   border-radius: 8px;
-  border-color: #eaeaea;
-  background-color: #ffffff;
+  border-color: var(--border-color);
+  background-color: var(--bg-surface);
 }
 
 .section {
@@ -134,7 +141,7 @@ const terminateSession = (sessionId: string, isCurrentSession: boolean | undefin
 
 .subtitle {
   font-size: 14px;
-  color: #666;
+  color: var(--text-muted);
   margin: 0;
 }
 
@@ -150,12 +157,12 @@ const terminateSession = (sessionId: string, isCurrentSession: boolean | undefin
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: #fafafa;
+    background-color: var(--hover-bg);
   }
 
   @media (max-width: 480px) {
@@ -185,12 +192,12 @@ const terminateSession = (sessionId: string, isCurrentSession: boolean | undefin
 .device {
   font-weight: 600;
   font-size: 16px;
-  color: #333;
+  color: var(--text-main);
 }
 
 .ip,
 .date {
   font-size: 13px;
-  color: #777;
+  color: var(--text-placeholder);
 }
 </style>
