@@ -2,8 +2,12 @@
 import type { ProjectDto } from 'src/shared/api/dto';
 import { useRouter } from 'vue-router';
 
-defineProps<{
+const props = defineProps<{
   project: ProjectDto;
+}>();
+
+const emit = defineEmits<{
+  (e: 'clickDelete', value: string): void;
 }>();
 
 const router = useRouter();
@@ -15,6 +19,11 @@ const formatDate = (isoString: string) => {
     year: 'numeric',
   });
 };
+
+const handleDelete = (e: Event) => {
+  e.stopPropagation()
+  emit('clickDelete', props.project.id)
+}
 </script>
 
 <template>
@@ -25,6 +34,7 @@ const formatDate = (isoString: string) => {
         <QBadge :class="$style.nanoIdBadge">
           {{ project.nanoId }}
         </QBadge>
+        <QBtn round flat icon="delete" size="xs" style="color: #d32f2f" @click="handleDelete"/>
       </div>
 
       <p :class="$style.projectDesc" :title="project.description">
@@ -67,13 +77,13 @@ const formatDate = (isoString: string) => {
 
 .cardHeader {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 12px;
   gap: 12px;
 }
 
 .projectName {
+  width: 100%;
   font-size: 18px;
   font-weight: 600;
   margin: 0;

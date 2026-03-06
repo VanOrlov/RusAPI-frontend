@@ -16,4 +16,9 @@ export const projects = {
     const { data } = await API.get<ProjectDto>(`/projects/${id}`);
     return data;
   },
+
+  async delete(id: string): Promise<void> {
+    const { data } = await API.delete<void>(`/projects/${id}`);
+    return data;
+  },
 };

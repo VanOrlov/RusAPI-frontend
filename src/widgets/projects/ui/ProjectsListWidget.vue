@@ -3,10 +3,13 @@ import { computed, ref } from 'vue';
 import { useProjectsQuery } from 'src/entities/project/model/projects.query';
 import { ProjectCard } from 'src/entities/project/ui';
 import { CreateProjectModal } from 'src/features/create-project/ui';
+import { DeleteProjectModal } from 'src/features/delete-project/ui';
 
 const { data: projects, isLoading: isProjectsLoading = true } = useProjectsQuery();
 
 const isModalOpen = ref(false);
+const isDeleteProjectModalOpen = ref(false)
+const idProjectToDelete = ref<string | null>(null)
 
 const sortedProjects = computed(() => {
   if (!projects.value) return [];
@@ -16,6 +19,11 @@ const sortedProjects = computed(() => {
     new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
   );
 });
+
+const handleDeleteProject = (projectId: string) => {
+  idProjectToDelete.value = projectId
+  isDeleteProjectModalOpen.value = true
+}
 </script>
 
 <template>
@@ -45,6 +53,7 @@ const sortedProjects = computed(() => {
           v-for="project in sortedProjects"
           :key="project.id"
           :project="project"
+          @click-delete="handleDeleteProject"
           v-motion-slide-up-fast
         />
       </div>
@@ -64,6 +73,7 @@ const sortedProjects = computed(() => {
     </Transition>
 
     <CreateProjectModal v-model="isModalOpen" />
+    <DeleteProjectModal v-model="isDeleteProjectModalOpen" :project-id="idProjectToDelete" />
   </div>
 </template>
 
