@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import { useUserQuery } from 'src/entities/user/model/user.query';
 import { useLogout } from 'src/features/logout/model/use-logout';
 import { accessToken } from 'src/shared/api/methods/token';
+import { ThemeSwitcher } from './components';
 
 const router = useRouter();
 
@@ -29,92 +30,91 @@ const handleLogout = () => {
 <template>
   <QHeader :class="$style.header" class="bg-transparent">
     <div :class="$style.headerContainer">
-      
       <div :class="$style.logoWrapper" @click="goTo('/')">
         <div :class="$style.logoIcon">
           <QIcon name="hub" color="white" size="xs" />
         </div>
-        <span :class="$style.headerLogo">
-          Rus<span :class="$style.highlight">API</span>
-        </span>
+        <span :class="$style.headerLogo"> Rus<span :class="$style.highlight">API</span> </span>
       </div>
 
       <div :class="$style.actions">
-        
+        <ThemeSwitcher />
         <template v-if="isLoading">
           <QSpinner color="secondary" size="1.5em" />
         </template>
 
         <template v-else-if="!isAuthenticated">
-          <QBtn 
-            flat
-            label="Войти" 
-            no-caps 
-            :class="$style.ghostBtn" 
-            @click="goTo('/login')" 
-          />
-          <QBtn 
-            unelevated 
-            color="secondary" 
-            label="Регистрация" 
-            no-caps 
-            :class="$style.primaryBtn" 
-            @click="goTo('/signup')" 
+          <QBtn flat label="Войти" no-caps :class="$style.ghostBtn" @click="goTo('/login')" />
+          <QBtn
+            unelevated
+            color="secondary"
+            label="Регистрация"
+            no-caps
+            :class="$style.primaryBtn"
+            @click="goTo('/signup')"
           />
         </template>
 
         <template v-else>
           <div :class="$style.userProfile" class="cursor-pointer">
-            <QAvatar 
-              size="40px" 
-              font-size="16px" 
-              color="secondary" 
-              text-color="white" 
+            <QAvatar
+              size="40px"
+              font-size="16px"
+              color="secondary"
+              text-color="white"
               :class="$style.avatar"
             >
               {{ userInitials }}
             </QAvatar>
-            
-            <QMenu auto-close transition-show="jump-down" transition-hide="jump-up" :offset="[0, 10]">
+
+            <QMenu
+              auto-close
+              transition-show="jump-down"
+              transition-hide="jump-up"
+              :offset="[0, 10]"
+            >
               <QList style="min-width: 220px" class="q-py-sm">
-                
                 <QItem>
                   <QItemSection>
-                    <QItemLabel class="text-weight-bold">{{ user?.name || 'Пользователь' }}</QItemLabel>
+                    <QItemLabel class="text-weight-bold">{{
+                      user?.name || 'Пользователь'
+                    }}</QItemLabel>
                     <QItemLabel caption>{{ user?.email || 'email@hidden.com' }}</QItemLabel>
                   </QItemSection>
                 </QItem>
-                
+
                 <QSeparator class="q-my-sm" />
-                
+
                 <QItem clickable @click="goTo('/account')" :class="$style.menuItem">
                   <QItemSection avatar style="min-width: 36px">
                     <QIcon name="manage_accounts" color="grey-7" size="sm" />
                   </QItemSection>
                   <QItemSection>Мой профиль</QItemSection>
                 </QItem>
-                
+
                 <QItem clickable @click="goTo('/projects')" :class="$style.menuItem">
                   <QItemSection avatar style="min-width: 36px">
                     <QIcon name="folder_open" color="grey-7" size="sm" />
                   </QItemSection>
                   <QItemSection>Мои проекты</QItemSection>
                 </QItem>
-                
+
                 <QSeparator class="q-my-sm" />
-                
-                <QItem clickable @click="handleLogout" :class="[$style.menuItem, $style.logoutItem]">
+
+                <QItem
+                  clickable
+                  @click="handleLogout"
+                  :class="[$style.menuItem, $style.logoutItem]"
+                >
                   <QItemSection avatar style="min-width: 36px">
                     <QIcon name="logout" color="negative" size="sm" />
                   </QItemSection>
                   <QItemSection class="text-negative text-weight-medium">Выйти</QItemSection>
                 </QItem>
-
               </QList>
             </QMenu>
           </div>
         </template>
-        
       </div>
     </div>
   </QHeader>
@@ -157,6 +157,13 @@ const handleLogout = () => {
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 10px rgba(38, 166, 154, 0.3);
+  @media (max-width: 768px) {
+    width: 26px;
+    height: 26px;
+    i {
+      font-size: 14px !important;
+    }
+  }
 }
 
 .headerLogo {
@@ -165,6 +172,9 @@ const handleLogout = () => {
   letter-spacing: -0.5px;
   font-family: 'Inter', 'Segoe UI', sans-serif;
   color: var(--text-main);
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
 }
 
 .highlight {
@@ -182,6 +192,7 @@ const handleLogout = () => {
   border-radius: 8px;
   padding: 8px 16px;
   transition: background 0.2s;
+  color: var(--text-main);
 
   &:hover {
     background: rgba(0, 0, 0, 0.04);
@@ -193,7 +204,9 @@ const handleLogout = () => {
   border-radius: 8px;
   padding: 8px 20px;
   box-shadow: 0 4px 12px rgba(38, 166, 154, 0.2);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 
   &:hover {
     transform: translateY(-1px);
@@ -203,7 +216,9 @@ const handleLogout = () => {
 
 .userProfile {
   border-radius: 50%;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 
   &:hover {
     transform: scale(1.05);
@@ -242,7 +257,7 @@ const handleLogout = () => {
   .headerContainer {
     margin-inline: 20px;
   }
-  
+
   .ghostBtn {
     display: none;
   }
