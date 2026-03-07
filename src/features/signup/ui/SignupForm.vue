@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { emailRules, nameRules, passwordRules } from '../model/rules';
 import { useSignupStore } from '../model/store/signup.store';
@@ -6,6 +7,10 @@ import { ROUTE_NAMES } from 'src/shared/app/model';
 
 const signupStore = useSignupStore();
 const router = useRouter();
+
+// Добавляем переменные для переключения видимости паролей
+const isPwdVisible = ref(false);
+const isRepeatPwdVisible = ref(false);
 
 const onSubmit = async () => {
   const success = await signupStore.register();
@@ -17,40 +22,58 @@ const onSubmit = async () => {
 
 <template>
   <div :class="$style.signupContainer">
-    <div :class="$style.formTitle" v-motion-slide-up-fast>
-      Регистрация
-    </div>
+    <div :class="$style.formTitle" v-motion-slide-up-fast>Регистрация</div>
     <div :class="$style.formContainer" v-motion-slide-up>
-      <QForm>
+      <QForm @submit="onSubmit">
         <QInput
           v-model="signupStore.signupData.name"
           color="secondary"
           label="Имя"
           :rules="nameRules"
         />
+
         <QInput
           v-model="signupStore.signupData.email"
           color="secondary"
           label="Email"
+          type="email"
           :rules="emailRules"
         />
+
         <QInput
           v-model="signupStore.signupData.password"
           color="secondary"
           label="Пароль"
-          type="password"
+          :type="isPwdVisible ? 'text' : 'password'"
           :rules="passwordRules"
-        />
+        >
+          <template v-slot:append>
+            <QIcon
+              :name="isPwdVisible ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPwdVisible = !isPwdVisible"
+            />
+          </template>
+        </QInput>
+
         <QInput
           v-model="signupStore.signupData.repeatPassword"
           color="secondary"
           label="Повторите пароль"
-          type="password"
+          :type="isRepeatPwdVisible ? 'text' : 'password'"
           :rules="[(val) => val === signupStore.signupData.password || 'Пароль не совпадает']"
-        />
+        >
+          <template v-slot:append>
+            <QIcon
+              :name="isRepeatPwdVisible ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isRepeatPwdVisible = !isRepeatPwdVisible"
+            />
+          </template>
+        </QInput>
         <QBtn
+          type="submit"
           :disable="!signupStore.isSignupDataValid"
-          @click="onSubmit"
           color="secondary"
           label="Регистрация"
           no-caps

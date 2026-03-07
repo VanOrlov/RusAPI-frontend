@@ -2,9 +2,12 @@
 import { useRouter } from 'vue-router';
 import { useLoginStore } from '../model/store/login.store';
 import { ROUTE_NAMES } from 'src/shared/app/model';
+import { ref } from 'vue';
 
 const loginStore = useLoginStore();
 const router = useRouter();
+
+const isPwdVisible = ref(false);
 
 const onSubmit = async () => {
   const success = await loginStore.login();
@@ -18,8 +21,8 @@ const onSubmit = async () => {
   <div :class="$style.loginContainer">
     <div :class="$style.formTitle" v-motion-slide-up-fast>Вход</div>
     <div :class="$style.formContainer" v-motion-slide-up>
-      <QForm>
-        <QInput v-model="loginStore.loginData.email" color="secondary" label="Email">
+      <QForm @submit="onSubmit">
+        <QInput v-model="loginStore.loginData.email" color="secondary" label="Email" type="email">
           <template v-slot:prepend>
             <QIcon name="email" />
           </template>
@@ -28,14 +31,21 @@ const onSubmit = async () => {
           v-model="loginStore.loginData.password"
           color="secondary"
           label="Пароль"
-          type="password"
+          :type="isPwdVisible ? 'text' : 'password'"
         >
           <template v-slot:prepend>
             <QIcon name="lock" />
           </template>
+          <template v-slot:append>
+            <QIcon
+              :name="isPwdVisible ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPwdVisible = !isPwdVisible"
+            />
+          </template>
         </QInput>
         <QBtn
-          @click="onSubmit"
+          type="submit"
           :disable="!loginStore.isLoginDataValid"
           :loading="loginStore.btnLoading"
           color="secondary"
@@ -71,7 +81,7 @@ const onSubmit = async () => {
   font-weight: 600;
 
   @media (min-width: 768px) {
-    font-size: 30px; 
+    font-size: 30px;
   }
 }
 
@@ -83,7 +93,7 @@ const onSubmit = async () => {
   background-color: var(--bg-surface);
 
   @media (max-width: 400px) {
-    padding: 16px; 
+    padding: 16px;
   }
 }
 
