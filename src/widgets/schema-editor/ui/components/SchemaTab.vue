@@ -1,26 +1,42 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { useUpdateSchema } from 'src/features/update-schema';
-import type { ResourceDto, SchemaFieldDto } from 'src/shared/api/dto';
+import type { ResourceDto, SchemaFieldDto, SchemaFieldFrontendDto } from 'src/shared/api/dto';
 import { FAKER_OPTIONS } from 'src/shared/config/faker-options';
+import { isRulesValid } from 'src/shared/utils';
 
 const props = defineProps<{
   resource: ResourceDto;
   projectNanoId: string;
 }>();
 
+const FIELD_NAME_REGEX = /^[a-zA-Z0-9_]+$/;
+
 const { mutate: updateSchema, isLoading: isSaving } = useUpdateSchema();
 
 const filteredOptions = ref(FAKER_OPTIONS);
-const localSchema = ref<SchemaFieldDto[]>([]);
+const localSchema = ref<SchemaFieldFrontendDto[]>([]);
 
 const addField = () => {
-  localSchema.value.push({ name: '', type: 'string' });
+  localSchema.value.push({ name: '', type: 'string', _id: crypto.randomUUID() });
 };
 
 const removeField = (index: number) => {
   localSchema.value.splice(index, 1);
 };
+
+const getFieldNameRules = (currentIndex: number) => [
+  (val: string) => FIELD_NAME_REGEX.test(val) || 'Только a-z, 0-9, _',
+  (val: string) => {
+    if (!val) return true;
+
+    const isDuplicate = localSchema.value.some(
+      (field, idx) => field.name === val && idx !== currentIndex,
+    );
+
+    return !isDuplicate || 'Поле с таким именем уже существует';
+  },
+];
 
 const isDirty = computed(() => {
   const original = JSON.stringify(props.resource.schema || []);
@@ -29,15 +45,21 @@ const isDirty = computed(() => {
 });
 
 const isValid = computed(() => {
-  const nameRegex = /^[a-zA-Z0-9_]+$/;
-  return localSchema.value.every((field) => field.name && nameRegex.test(field.name));
+  const isValidRules = localSchema.value.every((el, index) =>
+    isRulesValid(getFieldNameRules(index), el.name),
+  );
+
+  if (!isValidRules) return false;
+
+  return localSchema.value.every((field) => field.name && FIELD_NAME_REGEX.test(field.name));
 });
 
 const handleSave = () => {
+  const cleanSchema = localSchema.value.map((el) => ({ name: el.name, type: el.type }));
   updateSchema({
     resourceId: props.resource.id,
     projectNanoId: props.projectNanoId,
-    schema: localSchema.value,
+    schema: cleanSchema,
   });
 };
 
@@ -60,7 +82,12 @@ const filterFn = (val: string, update: (fn: () => void) => void) => {
 watch(
   () => props.resource,
   (newResource) => {
-    localSchema.value = JSON.parse(JSON.stringify(newResource.schema || []));
+    // Копируем массив и сразу добавляем каждому элементу _id
+    const clonedSchema = structuredClone(newResource.schema || []);
+    localSchema.value = clonedSchema.map((item: SchemaFieldDto) => ({
+      ...item,
+      _id: crypto.randomUUID(), // Это ключ для v-for чтобы рендер Vue не ломался
+    }));
   },
   { immediate: true, deep: true },
 );
@@ -75,7 +102,7 @@ watch(
     </div>
 
     <div :class="$style.fieldsList">
-      <div v-for="(field, index) in localSchema" :key="index" :class="$style.fieldRow">
+      <div v-for="(field, index) in localSchema" :key="field._id" :class="$style.fieldRow">
         <div :class="$style.inputWrapper">
           <label :class="$style.label">Имя поля</label>
           <QInput
@@ -86,7 +113,7 @@ watch(
             class="custom-input"
             color="secondary"
             :disable="index === 0"
-            :rules="[(val) => /^[a-zA-Z0-9_]+$/.test(val) || 'Только a-z, 0-9, _']"
+            :rules="getFieldNameRules(index)"
             hide-bottom-space
           />
         </div>
@@ -143,14 +170,7 @@ watch(
     </div>
 
     <div :class="$style.btnsContainer">
-      <QBtn
-        outline
-        color="secondary"
-        icon="add"
-        label="Добавить поле"
-        no-caps
-        @click="addField"
-      />
+      <QBtn outline color="secondary" icon="add" label="Добавить поле" no-caps @click="addField" v-if="localSchema.length < 51" />
       <QBtn
         color="secondary"
         label="Сохранить схему"
@@ -222,6 +242,6 @@ watch(
   margin-top: 20px;
   display: flex;
   align-items: center;
-  gap: 10px
+  gap: 10px;
 }
 </style>

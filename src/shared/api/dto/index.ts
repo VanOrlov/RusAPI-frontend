@@ -1,22 +1,22 @@
 export interface RegisterRequestDto {
-    name: string;
-    email: string;
-    password: string
+  name: string;
+  email: string;
+  password: string;
 }
 
 export interface RegisterResponseDto {
-    accessToken: string;
-    user: {
-        id: string;
-        name: string;
-        email: string;
-        role: string;
-    }
+  accessToken: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+  };
 }
 
 export interface LoginRequestDto {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
 }
 
 export enum AuthProvider {
@@ -43,26 +43,26 @@ export enum UserStatus {
 }
 
 export interface AuthMeRequstDto {
-    email: string;
-    name: string;
-    id: string;
-    provider: AuthProvider.LOCAL | AuthProvider.YANDEX | AuthProvider.GITHUB;
-    providerId: string;
-    isEmailVerified: boolean;
-    emailVerificationToken: string;
-    passwordResetToken: string;
-    passwordResetExpires: Date;
-    role: UserRole.USER | UserRole.ADMIN;
-    plan: SubscriptionPlan.FREE | SubscriptionPlan.PRO | SubscriptionPlan.ENTERPRISE;
-    status: UserStatus.ACTIVE | UserStatus.BANNED | UserStatus.SUSPENDED;
-    avatarUrl: string;
-    lastLoginAt: Date;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date;
+  email: string;
+  name: string;
+  id: string;
+  provider: AuthProvider.LOCAL | AuthProvider.YANDEX | AuthProvider.GITHUB;
+  providerId: string;
+  isEmailVerified: boolean;
+  emailVerificationToken: string;
+  passwordResetToken: string;
+  passwordResetExpires: Date;
+  role: UserRole.USER | UserRole.ADMIN;
+  plan: SubscriptionPlan.FREE | SubscriptionPlan.PRO | SubscriptionPlan.ENTERPRISE;
+  status: UserStatus.ACTIVE | UserStatus.BANNED | UserStatus.SUSPENDED;
+  avatarUrl: string;
+  lastLoginAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date;
 }
 
-export type LoginResponseDto = RegisterResponseDto
+export type LoginResponseDto = RegisterResponseDto;
 
 export interface ChangePasswordDto {
   oldPassword: string;
@@ -104,6 +104,10 @@ export interface SchemaFieldDto {
   type: string;
 }
 
+export type SchemaFieldFrontendDto = {
+  _id: string;
+} & SchemaFieldDto;
+
 export interface UpdateSchemaPayload {
   resourceId: string;
   projectNanoId: string;
@@ -122,5 +126,5 @@ export interface Session {
   device: string;
   createdAt: string;
   lastActive: string;
-  isCurrent?: boolean
+  isCurrent?: boolean;
 }
