@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-
 const router = useRouter();
 
 const steps = [
@@ -29,26 +28,16 @@ const steps = [
         :class="$style.glow"
         v-motion
         :initial="{
-          background: 'radial-gradient(circle, rgba(38, 166, 154, 0.25) 0%, transparent 30%)',
           x: 200,
-          y: 200
+          y: 200,
         }"
         :visible-once="{
-          background: 'radial-gradient(circle, rgba(38, 166, 154, 0.25) 0%, transparent 70%)',
           x: 0,
           y: 0,
-          transition: { duration: 1000 },
+          transition: { type: 'spring', stiffness: 100, damping: 12 },
         }"
       ></div>
-      <div
-        :class="$style.glow"
-        style="
-          bottom: 10%;
-          right: -10%;
-          background: radial-gradient(circle, rgba(38, 166, 154, 0.1) 0%, transparent 70%);
-        "
-        v-motion
-      ></div>
+      <div :class="$style.glow" style="bottom: 10%; right: -10%" v-motion></div>
     </div>
 
     <section :class="$style.hero">
@@ -101,8 +90,14 @@ const steps = [
           :key="step.number"
           :class="$style.stepCard"
           v-motion
-          :initial="{ opacity: 0, y: 150, x: 150 }"
-          :visible-once="{ opacity: 1, y: 0, x: 0, transition: { delay: 250 * i, duration: 200 } }"
+          :initial="{ opacity: 0, y: -200, rotateX: 90, scale: 0.8 }"
+          :visible-once="{
+            opacity: 1,
+            y: 0,
+            rotateX: 0,
+            scale: 1,
+            transition: { delay: 250 * i, type: 'spring', stiffness: 100 },
+          }"
         >
           <div :class="$style.stepNumber">{{ step.number }}</div>
           <h3 :class="$style.stepTitle">{{ step.title }}</h3>
@@ -110,6 +105,102 @@ const steps = [
         </div>
       </div>
     </section>
+    <!--section :class="$style.bentoSection">
+      <div :class="$style.bentoHeader" v-motion-slide-visible-once-bottom>
+        <div :class="$style.badge">✨ Суперспособности</div>
+        <h2 :class="$style.sectionTitle">Больше, чем просто JSON</h2>
+      </div>
+
+      <div :class="$style.bentoGrid">
+        <div
+          :class="[$style.bentoCard, $style.bentoLarge]"
+          v-motion
+          :initial="{ opacity: 0, z: -500, rotateX: -45, x: -100 }"
+          :visible-once="{
+            opacity: 1,
+            z: 0,
+            rotateX: 0,
+            x: 0,
+            transition: { type: 'spring', stiffness: 100, delay: 100 },
+          }"
+        >
+          <div :class="$style.bentoIconWrapper">
+            <QIcon name="hub" size="32px" color="secondary" />
+          </div>
+          <h3>Сложные связи</h3>
+          <p>
+            Создавайте вложенные массивы и объекты любой глубины. RusAPI автоматически сгенерирует
+            связанные ID.
+          </p>
+          <div :class="$style.bentoGlow"></div>
+        </div>
+
+        <div
+          :class="$style.bentoCard"
+          v-motion
+          :initial="{ opacity: 0, y: -200, rotateX: 90, scale: 0.8 }"
+          :visible-once="{
+            opacity: 1,
+            y: 0,
+            rotateX: 0,
+            scale: 1,
+            transition: { type: 'spring', stiffness: 100, delay: 300 },
+          }"
+        >
+          <div :class="$style.bentoIconWrapper">
+            <QIcon name="speed" size="32px" color="orange" />
+          </div>
+          <h3>Zero Latency</h3>
+          <p>Ответы за миллисекунды благодаря кэшированию на edge-серверах.</p>
+        </div>
+
+        <div
+          :class="$style.bentoCard"
+          v-motion
+          :initial="{ opacity: 0, x: 200, rotateZ: 15, scale: 0.5 }"
+          :visible-once="{
+            opacity: 1,
+            x: 0,
+            rotateZ: 0,
+            scale: 1,
+            transition: { type: 'spring', stiffness: 100, delay: 500 },
+          }"
+        >
+          <div :class="$style.bentoIconWrapper">
+            <QIcon name="security" size="32px" color="blue" />
+          </div>
+          <h3>Токены и Auth</h3>
+          <p>Эмулируйте 401/403 ошибки для проверки логики авторизации.</p>
+        </div>
+
+        <div
+          :class="[$style.bentoCard, $style.bentoWide]"
+          v-motion
+          :initial="{ opacity: 0, y: 150, rotateX: 45 }"
+          :visible-once="{
+            opacity: 1,
+            y: 0,
+            rotateX: 0,
+            transition: { type: 'spring', stiffness: 100, delay: 500 },
+          }"
+        >
+          <div :class="$style.wideContent">
+            <div>
+              <h3>Faker.js Под капотом</h3>
+              <p>
+                Имена, адреса, кредитные карты, аватарки — более 100+ типов реалистичных мок-данных
+                доступны по клику.
+              </p>
+            </div>
+            <div :class="$style.mockTags">
+              <span v-for="tag in ['Internet', 'Commerce', 'Finance', 'System']" :key="tag">{{
+                tag
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </!--section-->
 
     <section :class="$style.showcaseSection">
       <div :class="$style.showcaseContainer" v-motion-slide-visible-once-bottom>
@@ -169,10 +260,24 @@ const steps = [
       </div>
     </section>
 
-    <section :class="$style.ctaSection" v-motion-slide-visible-once-bottom>
+    <section
+      :class="$style.ctaSection"
+      v-motion
+      :initial="{ opacity: 0, y: -200, rotateX: 90, scale: 0.8 }"
+      :visible-once="{
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
+        scale: 1,
+        transition: { delay: 250, type: 'spring', stiffness: 100 },
+      }"
+    >
       <div :class="$style.ctaBox">
         <h2>Хватит хардкодить - Пора разрабатывать.</h2>
-        <p>Зарегистрируйтесь сейчас и создайте свой первый <br/> мок-эндпоинт менее чем за минуту.</p>
+        <p>
+          Зарегистрируйтесь сейчас и создайте свой первый <br />
+          мок-эндпоинт менее чем за минуту.
+        </p>
         <button :class="$style.btnPrimary" @click="router.push('/signup')">
           Перейти к регистрации
         </button>
@@ -205,6 +310,12 @@ $bg-gray: #f8fafc;
 
 /* Глоу-эффект на фоне */
 .glow {
+  background: radial-gradient(
+    circle,
+    rgba(38, 166, 154, 0.4) 0%,
+    rgba(27, 117, 210, 0.15) 40%,
+    transparent 70%
+  );
   position: absolute;
   width: 800px;
   height: 800px;
@@ -505,6 +616,147 @@ $bg-gray: #f8fafc;
     color: var(--text-muted);
     font-size: 1.125rem;
     margin-bottom: 32px;
+  }
+}
+
+/* --- BENTO SECTION (3D Анимация) --- */
+.bentoSection {
+  padding: 100px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.bentoHeader {
+  text-align: center;
+  margin-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Контейнер задает 3D-пространство для дочерних элементов */
+.bentoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(200px, auto);
+  gap: 24px;
+  perspective: 1200px; /* Ключевая фишка для 3D-вращений */
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bentoCard {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  /* Плавный ховер поверх motion-анимаций */
+  transition:
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px) scale(1.02) !important; /* !important чтобы перекрыть конечный state motion */
+    border-color: rgba(38, 166, 154, 0.4);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+
+    .bentoGlow {
+      opacity: 1;
+    }
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--text-main);
+  }
+
+  p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+}
+
+/* Специфичные размеры для пазла */
+.bentoLarge {
+  grid-column: span 1;
+  grid-row: span 2;
+
+  @media (max-width: 900px) {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+}
+
+.bentoWide {
+  grid-column: span 3;
+
+  @media (max-width: 900px) {
+    grid-column: span 1;
+  }
+}
+
+/* Декорации */
+.bentoIconWrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--bg-page);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
+}
+
+.bentoGlow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 50% 50%, rgba(38, 166, 154, 0.1), transparent 50%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.wideContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.mockTags {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  span {
+    padding: 8px 16px;
+    background: var(--bg-page);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
   }
 }
 </style>

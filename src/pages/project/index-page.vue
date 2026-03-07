@@ -57,7 +57,7 @@ const selectedResource = computed(() => {
       <h2>Проект не найден</h2>
     </div>
 
-    <CreateResourceModal v-model="isModalOpen" :project-nano-id="projectId" />
+    <CreateResourceModal v-model="isModalOpen" :project-nano-id="projectId" :resources="resources!" />
   </div>
 </template>
 

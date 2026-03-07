@@ -1,0 +1,1 @@
+export { default as MascottBase } from './MascottBase.vue'

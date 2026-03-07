@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useCreateResource } from 'src/features/create-resource';
+import type { Rule } from 'src/shared/types';
+import { isRulesValid } from 'src/shared/utils';
+import type { ResourceDto } from 'src/shared/api/dto';
 
 const props = defineProps<{
   modelValue: boolean;
   projectNanoId: string;
+  resources: ResourceDto[];
 }>();
 
 const emit = defineEmits<{
@@ -25,9 +29,17 @@ const close = () => {
   emit('update:modelValue', false);
 };
 
+const resourceNameRules: Rule[] = [
+  (val) => !!val || 'Обязательное поле',
+  (val) => /^[a-zA-Z0-9_-]+$/.test(val) || 'Только латиница, цифры, - и _',
+  (val) => val.length < 21 || 'Максимум 20 символов',
+  (val) => !props.resources.map(el => el.name).includes(val) || 'Эндпоинт с таким именем уже существует',
+];
+
+const isValid = computed(() => isRulesValid(resourceNameRules, newResourceName.value))
+
 const handleCreate = () => {
-  const isValid = /^[a-zA-Z0-9_-]+$/.test(newResourceName.value);
-  if (!isValid) return;
+  if (!isValid.value) return;
 
   try {
     createEndpoint({
@@ -65,10 +77,7 @@ const handleCreate = () => {
           color="secondary"
           prefix="/"
           autofocus
-          :rules="[
-            (val) => !!val || 'Обязательное поле',
-            (val) => /^[a-zA-Z0-9_-]+$/.test(val) || 'Только латиница, цифры, - и _',
-          ]"
+          :rules="resourceNameRules"
         />
       </QCardSection>
 
@@ -80,7 +89,7 @@ const handleCreate = () => {
           color="secondary"
           no-caps
           :loading="isCreating"
-          :disable="!newResourceName || !/^[a-zA-Z0-9_-]+$/.test(newResourceName)"
+          :disable="!isValid"
           @click="handleCreate"
         />
       </QCardActions>
