@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { clearToken, setToken } from './methods/token';
+
+const baseURL = process.env.API_URL!
 export const API = axios.create({
-  baseURL: process.env.API_URL!,
+  baseURL,
   withCredentials: true,
 });
 
@@ -40,6 +42,7 @@ API.interceptors.response.use(
       if (originalRequest.url?.includes('/auth/refresh')) {
         clearToken();
         window.location.href = '/login?expired=true';
+        console.log(error.response, isAuthRequest)
         return Promise.reject(Error(error));
       }
 
@@ -62,7 +65,7 @@ API.interceptors.response.use(
 
         try {
           const { data } = await axios.post<{ accessToken: string }>(
-            `${process.env.API_URL}/auth/refresh`,
+            `${baseURL}/auth/refresh`,
             {},
             { withCredentials: true },
           );
@@ -77,7 +80,8 @@ API.interceptors.response.use(
         } catch (refreshError) {
           processQueue(refreshError, null);
           clearToken();
-          window.location.href = '/login?expired=true';
+          //window.location.href = '/login?expired=true';
+          console.log(error.response, isAuthRequest, 'asdasdasda')
           return Promise.reject(new Error(refreshError as string));
         } finally {
           isRefreshing = false;

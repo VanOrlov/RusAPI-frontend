@@ -80,16 +80,18 @@ const router = useRouter();
 
 <style lang="scss" module>
 .sidebar {
-  width: 100%;
   background-color: var(--bg-surface);
-  border-bottom: 1px solid var(--border-color);
   padding: 16px;
+  border: 1px solid var(--border-color);
+  margin: 16px;
+  margin-bottom: 0px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
 
   @media (min-width: 768px) {
+    margin-right: 0px;
     width: 280px;
-    border: 1px solid var(--border-color);
     padding: 24px;
     height: fit-content;
     position: sticky;
