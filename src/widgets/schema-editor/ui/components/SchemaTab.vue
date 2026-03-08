@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch, watchEffect } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useUpdateSchema } from 'src/features/update-schema';
 import type { ResourceDto, SchemaFieldDto, SchemaFieldFrontendDto } from 'src/shared/api/dto';
 import { FAKER_OPTIONS } from 'src/shared/config/faker-options';
