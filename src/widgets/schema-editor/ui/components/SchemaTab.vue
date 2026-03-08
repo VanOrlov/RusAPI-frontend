@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, watchEffect } from 'vue';
 import { useUpdateSchema } from 'src/features/update-schema';
 import type { ResourceDto, SchemaFieldDto, SchemaFieldFrontendDto } from 'src/shared/api/dto';
 import { FAKER_OPTIONS } from 'src/shared/config/faker-options';
@@ -18,7 +18,7 @@ const filteredOptions = ref(FAKER_OPTIONS);
 const localSchema = ref<SchemaFieldFrontendDto[]>([]);
 
 const addField = () => {
-  localSchema.value.push({ name: '', type: 'string', _id: crypto.randomUUID() });
+  localSchema.value.push({ name: '', type: 'lorem.word', _id: crypto.randomUUID() });
 };
 
 const removeField = (index: number) => {
@@ -40,7 +40,7 @@ const getFieldNameRules = (currentIndex: number) => [
 
 const isDirty = computed(() => {
   const original = JSON.stringify(props.resource.schema || []);
-  const current = JSON.stringify(localSchema.value);
+  const current = JSON.stringify(localSchema.value.map(el => ({name: el.name, type: el.type})));
   return original !== current;
 });
 
