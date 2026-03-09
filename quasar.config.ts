@@ -38,6 +38,9 @@ export default defineConfig(() => {
         browser: ['es2022', 'firefox115', 'chrome115', 'safari14'],
         node: 'node20',
       },
+      viteVuePluginOptions: {
+        include: [/\.vue$/, /\.md$/],
+      },
 
       typescript: {
         strict: true,
@@ -73,6 +76,7 @@ export default defineConfig(() => {
       },
 
       vitePlugins: [
+        ['unplugin-vue-markdown/vite', {}],
         [
           'vite-plugin-checker',
           {
@@ -89,10 +93,10 @@ export default defineConfig(() => {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver
     devServer: {
-      // https: {
-      //   key: 'localhost-key.pem',
-      //   cert: 'localhost.pem',
-      // },
+      https: {
+        key: 'localhost-key.pem',
+        cert: 'localhost.pem',
+      },
       open: false, // opens browser window automatically
     },
 

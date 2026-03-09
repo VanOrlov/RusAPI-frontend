@@ -30,7 +30,7 @@ const activeTab = ref('schema');
 
       <a :href="`https://fakerjs.dev/api`" target="_blank" :class="$style.publicLink">
         <QIcon name="open_in_new" size="10px" />
-        Открыть GET API
+        Открыть Faker.js API
       </a>
     </div>
 

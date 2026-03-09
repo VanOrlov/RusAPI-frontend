@@ -8,4 +8,5 @@ export const ROUTE_NAMES = {
   ACCOUNT: 'ACCOUNT',
   PROJECTS: 'PROJECTS',
   PROJECT: 'PROJECT',
+  DOCS: 'DOCS',
 } as const
