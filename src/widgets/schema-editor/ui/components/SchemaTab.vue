@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { useUpdateSchema } from 'src/features/update-schema';
+import { ApplyTemplateButton } from 'src/features/apply-resource-template';
 import type { ResourceDto, SchemaFieldDto, SchemaFieldFrontendDto } from 'src/shared/api/dto';
 import { FAKER_OPTIONS } from 'src/shared/config/faker-options';
 import { isRulesValid } from 'src/shared/utils';
@@ -61,6 +62,13 @@ const handleSave = () => {
     projectNanoId: props.projectNanoId,
     schema: cleanSchema,
   });
+};
+
+const applyTemplate = (schema: SchemaFieldDto[]) => {
+  localSchema.value = schema.map((field) => ({
+    ...field,
+    _id: crypto.randomUUID(),
+  }));
 };
 
 const filterFn = (val: string, update: (fn: () => void) => void) => {
@@ -170,6 +178,7 @@ watch(
     </div>
 
     <div :class="$style.btnsContainer">
+      <ApplyTemplateButton @apply="applyTemplate" />
       <QBtn outline color="secondary" icon="add" label="Добавить поле" no-caps @click="addField" v-if="localSchema.length < 51" />
       <QBtn
         color="secondary"

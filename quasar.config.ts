@@ -93,10 +93,10 @@ export default defineConfig(() => {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver
     devServer: {
-      https: {
-        key: 'localhost-key.pem',
-        cert: 'localhost.pem',
-      },
+      // https: {
+      //   key: 'localhost-key.pem',
+      //   cert: 'localhost.pem',
+      // },
       open: false, // opens browser window automatically
     },
 
