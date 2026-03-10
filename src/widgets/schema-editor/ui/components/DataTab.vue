@@ -127,6 +127,9 @@ const recordsCountRules: Rule[] = [
     color: #d4d4d4;
     font-family: 'Courier New', Courier, monospace;
     font-size: 14px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
   }
 }
 </style>
