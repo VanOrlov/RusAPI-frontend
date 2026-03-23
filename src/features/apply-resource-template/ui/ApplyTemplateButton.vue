@@ -1,52 +1,61 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue';
 import type { SchemaFieldDto } from 'src/shared/api/dto';
 import { RESOURCE_TEMPLATES } from 'src/shared/config/resource-templates';
+import TemplateModal from './TemplateModal.vue';
 
 const emit = defineEmits<{
   (e: 'apply', schema: SchemaFieldDto[]): void;
 }>();
 
-const handleSelect = (schema: SchemaFieldDto[]) => {
-  emit('apply', schema);
+const isOpen = ref(false);
+const selectedTemplateId = ref<string | null>(null);
+
+const selectedTemplate = computed(() =>
+  RESOURCE_TEMPLATES.find((t) => t.id === selectedTemplateId.value) || null,
+);
+
+const handleOpen = () => {
+  if (!selectedTemplateId.value && RESOURCE_TEMPLATES.length > 0) {
+    selectedTemplateId.value = RESOURCE_TEMPLATES[0]!.id;
+  }
+  isOpen.value = true;
+};
+
+const handleApply = () => {
+  if (!selectedTemplate.value) return;
+  emit('apply', selectedTemplate.value.schema);
 };
 </script>
 
 <template>
-  <QBtn
-    outline
-    color="secondary"
-    icon="dashboard_customize"
-    label="Шаблоны"
-    no-caps
-    :class="$style.btn"
-  >
-    <QMenu auto-close :offset="[0, 8]" :class="$style.menu">
-      <QList style="min-width: 220px">
-        <QItem
-          v-for="template in RESOURCE_TEMPLATES"
-          :key="template.id"
-          v-close-popup
-          clickable
-          @click="handleSelect(template.schema)"
-        >
-          <QItemSection>
-            <QItemLabel>{{ template.name }}</QItemLabel>
-            <QItemLabel caption class="text-grey-6">
-              {{ template.description }}
-            </QItemLabel>
-          </QItemSection>
-        </QItem>
-      </QList>
-    </QMenu>
-  </QBtn>
+  <div :class="$style.wrapper">
+    <QBtn
+      outline
+      color="secondary"
+      icon="dashboard_customize"
+      label="Шаблоны"
+      no-caps
+      :class="$style.btn"
+      @click="handleOpen"
+    />
+
+    <TemplateModal
+      v-model="isOpen"
+      :templates="RESOURCE_TEMPLATES"
+      :selected-template="selectedTemplate"
+      @select="selectedTemplateId = $event"
+      @apply="handleApply"
+    />
+  </div>
 </template>
 
 <style lang="scss" module>
-.btn {
-  flex-shrink: 0;
+.wrapper {
+  display: inline-flex;
 }
 
-.menu {
-  border-radius: 8px;
+.btn {
+  flex-shrink: 0;
 }
 </style>

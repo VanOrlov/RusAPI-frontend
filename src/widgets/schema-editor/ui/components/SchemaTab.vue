@@ -178,8 +178,19 @@ watch(
     </div>
 
     <div :class="$style.btnsContainer">
-      <ApplyTemplateButton @apply="applyTemplate" />
-      <QBtn outline color="secondary" icon="add" label="Добавить поле" no-caps @click="addField" v-if="localSchema.length < 51" />
+      <div :class="$style.btnWrap">
+        <ApplyTemplateButton @apply="applyTemplate" />
+      </div>
+      <QBtn
+        v-if="localSchema.length < 51"
+        outline
+        color="secondary"
+        icon="add"
+        label="Добавить поле"
+        no-caps
+        :class="$style.actionBtn"
+        @click="addField"
+      />
       <QBtn
         color="secondary"
         label="Сохранить схему"
@@ -188,6 +199,7 @@ watch(
         icon="save"
         :loading="isSaving"
         :disable="!isDirty || !isValid"
+        :class="$style.actionBtn"
         @click="handleSave"
       />
     </div>
@@ -250,7 +262,22 @@ watch(
 .btnsContainer {
   margin-top: 20px;
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  align-items: stretch;
   gap: 10px;
+}
+
+.btnWrap {
+  display: inline-flex;
+  align-items: stretch;
+  min-height: 40px;
+
+  :global(button) {
+    min-height: 40px;
+  }
+}
+
+.actionBtn {
+  min-height: 40px;
 }
 </style>

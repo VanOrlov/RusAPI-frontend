@@ -15,10 +15,12 @@ const sortedProjects = computed(() => {
   if (!projects.value) return [];
 
   // Создаем копию и сразу сортируем
-  return [...projects.value].sort((a, b) => 
-    new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+  return [...projects.value].sort(
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
   );
 });
+
+const projectsCount = computed(() => projects.value?.length ?? 0);
 
 const handleDeleteProject = (projectId: string) => {
   idProjectToDelete.value = projectId
@@ -30,7 +32,12 @@ const handleDeleteProject = (projectId: string) => {
   <div :class="$style.widget">
     <div :class="$style.header">
       <div>
-        <h1 :class="$style.title">Мои проекты</h1>
+        <div :class="$style.titleRow">
+          <h1 :class="$style.title">Мои проекты</h1>
+          <span v-if="!isProjectsLoading" :class="$style.badge">
+            {{ projectsCount }}
+          </span>
+        </div>
         <p :class="$style.subtitle">Управляйте вашими мок-API и ресурсами.</p>
       </div>
       <QBtn
@@ -114,6 +121,26 @@ const handleDeleteProject = (projectId: string) => {
   @media (min-width: 768px) {
     font-size: 32px;
   }
+}
+
+.titleRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
 }
 
 .subtitle {
