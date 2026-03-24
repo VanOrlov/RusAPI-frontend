@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { clearToken, setToken } from './methods/token';
 
-const baseURL = 'https://localhost:3000/api' //process.env.API_URL!
+const baseURL = process.env.API_URL!
 export const API = axios.create({
   baseURL,
   withCredentials: true,
